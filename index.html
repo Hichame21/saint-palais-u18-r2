@@ -8,6 +8,9 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="U18 R2" />
   <title>Saint-Palais U18 R2</title>
+  <meta name="theme-color" content="#0b5f3b" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="apple-touch-icon" href="icons/icon-192.png" />
   <style>
@@ -17,12 +20,7 @@
 .match-roles{display:grid;grid-template-columns:repeat(4,minmax(120px,1fr));gap:7px;margin:8px 0 10px;padding:9px;background:#f7faf8;border:1px solid var(--line);border-radius:12px}.match-roles label{display:flex;flex-direction:column;gap:3px;font-size:9px;font-weight:900;color:#405249;text-transform:uppercase;letter-spacing:.03em}.match-roles select{width:100%;min-width:0;border:1px solid #ced9d2;border-radius:8px;padding:6px 7px;background:#fff;color:var(--ink);font-size:10px;text-transform:none;letter-spacing:0}.captain-badge{display:inline-flex;align-items:center;justify-content:center;width:12px;height:12px;border-radius:50%;background:#fff;color:#0b5f3b;border:1px solid #0b5f3b;font-size:7px;font-weight:950;line-height:1}.slot-yellow-row{gap:2px;padding-left:23px}.lineup-share-actions{display:flex;gap:6px;flex-wrap:wrap}.lineup-share-actions .btn{white-space:nowrap}.role-chip{display:inline-flex;align-items:center;justify-content:center;min-width:17px;height:13px;padding:0 3px;border-radius:999px;background:#e7f2fb;color:#1e5d8e;font-size:7px;font-weight:950;margin-left:3px}.bench-role-row{display:flex;align-items:center;gap:2px;min-height:9px;margin-bottom:1px}@media(max-width:760px){.match-roles{grid-template-columns:1fr 1fr}}
 
 
-/* --- Adaptation iPhone / PWA : contenu et logique strictement V1.27 --- */
-html{-webkit-text-size-adjust:100%;text-size-adjust:100%}body{overscroll-behavior-y:none}button,input,select,textarea{touch-action:manipulation}.table-wrap{-webkit-overflow-scrolling:touch}.bottom-nav{padding-bottom:max(8px,env(safe-area-inset-bottom))}
-@media(max-width:640px){
-  body{padding-bottom:88px}.app-header{padding:max(10px,env(safe-area-inset-top)) 12px 9px}.app-header h1{font-size:21px}.app-main{padding:10px}.card{padding:13px;border-radius:15px;margin-bottom:10px}.hero-title{font-size:24px}.grid-kpi{grid-template-columns:1fr 1fr;gap:7px;margin-bottom:10px}.kpi{padding:10px}.kpi strong{font-size:22px}.section-head{align-items:flex-start;flex-wrap:wrap;gap:7px;margin-bottom:9px}.btn{min-height:44px;padding:10px 12px}.btn.small{min-height:38px}.icon-btn{min-width:42px;min-height:42px}.bottom-nav{padding-left:3px;padding-right:3px}.bottom-nav button{min-height:48px;font-size:18px}.bottom-nav button small{font-size:8px}.toolbar{gap:6px}.toolbar select,.toolbar input,.modal input,.modal select,.modal textarea,.quick-add input,.quick-add select{font-size:16px;min-height:44px}.list-row{align-items:flex-start;padding:10px}.match-action-group{width:100%;justify-content:flex-start}.todo-item{align-items:flex-start;flex-direction:column}.todo-item .btn{width:100%}.callup-tools{display:grid;grid-template-columns:1fr;gap:7px}.callup-tools .btn{min-width:0;width:100%}.segmented button{min-height:42px}.season-panel{grid-template-columns:1fr}.season-card{padding:12px}.profile-kpis{grid-template-columns:repeat(3,1fr);gap:6px}.profile-kpi{padding:8px}.profile-kpi strong{font-size:19px}.profile-history{min-width:720px}.match-roles{grid-template-columns:1fr 1fr}.lineup-share-actions{display:grid;grid-template-columns:1fr 1fr}.lineup-share-actions .btn{width:100%}.pitch-scroll{margin-left:-4px;margin-right:-4px}.modal{width:100vw;max-width:none;max-height:92dvh;margin:auto 0 0 0;border-radius:20px 20px 0 0}.modal form{padding:14px;padding-bottom:max(16px,env(safe-area-inset-bottom))}.modal-head{position:sticky;top:0;background:#fff;z-index:3;padding-top:2px}.actions{position:sticky;bottom:0;background:#fff;padding-top:9px;padding-bottom:max(2px,env(safe-area-inset-bottom));margin-bottom:0}.actions .btn{flex:1}#closeMatchDialog,#playerProfileDialog{width:100vw;max-width:none;max-height:96dvh}.close-match-table{min-width:700px}.table th,.table td{padding:9px 8px}.table input[type=checkbox]{width:22px;height:22px}.ranking-row button{max-width:70%}
-}
-
+.header-actions{display:flex;gap:8px;align-items:center}.sync-badge{font-size:10px;font-weight:800;padding:4px 7px;border-radius:999px;background:#eef3f0;color:#466157}.sync-badge.ok{background:#e1f4e9;color:#17603c}.sync-badge.warn{background:#fff4d6;color:#a76300}.readonly-banner{position:sticky;top:68px;z-index:9;margin:0 auto 8px;max-width:880px;padding:8px 14px;border-radius:12px;background:#fff4d6;color:#754c00;font-size:12px;font-weight:800;display:none}.readonly-mode .readonly-banner{display:block}.auth-status{font-size:12px;color:var(--muted);margin:-4px 0 10px}.cloud-ok{color:var(--green);font-weight:800}.cloud-warn{color:var(--amber);font-weight:800}@media(max-width:640px){.header-actions .btn{padding:8px 9px;font-size:11px}.app-header h1{font-size:22px}}
 </style>
 </head>
 <body>
@@ -31,8 +29,9 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}body{overscroll-behavio
       <div class="eyebrow">SAINT-PALAIS-SUR-MER</div>
       <h1>U18 R2 <small style="font-size:11px;color:#65756d;font-weight:700">V1.27</small></h1>
     </div>
-    <button id="backupBtn" class="icon-btn" aria-label="Sauvegarde">↥</button>
+    <div class="header-actions"><button id="authBtn" class="btn small secondary" type="button">Connexion</button><button id="backupBtn" class="icon-btn" aria-label="Sauvegarde">↥</button></div>
   </header>
+  <div id="readonlyBanner" class="readonly-banner">Lecture seule — connecte-toi et garde une connexion Internet pour modifier.</div>
 
   <main id="app" class="app-main">
     <section id="view-dashboard" class="view active"></section>
@@ -145,6 +144,21 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}body{overscroll-behavio
     </form>
   </dialog>
 
+  <dialog id="authDialog" class="modal">
+    <form method="dialog" id="authForm">
+      <div class="modal-head"><h2>Connexion</h2><button value="cancel" class="icon-btn">×</button></div>
+      <div id="authCurrent" class="auth-status">Non connecté</div>
+      <label>Email<input id="authEmail" type="email" autocomplete="email" placeholder="votre@email.fr" /></label>
+      <label>Mot de passe<input id="authPassword" type="password" autocomplete="current-password" minlength="8" /></label>
+      <div class="stack">
+        <button type="button" id="signInBtn" class="btn primary">Se connecter</button>
+        <button type="button" id="signUpBtn" class="btn secondary">Créer mon compte</button>
+        <button type="button" id="signOutBtn" class="btn danger" hidden>Se déconnecter</button>
+      </div>
+      <p class="muted" style="margin-top:12px">Les modifications sont autorisées uniquement connecté et en ligne. Hors connexion, l’application reste consultable.</p>
+    </form>
+  </dialog>
+
   <dialog id="backupDialog" class="modal">
     <form method="dialog">
       <div class="modal-head"><h2>Sauvegarde</h2><button value="cancel" class="icon-btn">×</button></div>
@@ -184,9 +198,15 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}body{overscroll-behavio
   let currentView = 'dashboard';
   let statsMode = 'entry';
   let callupViewMode = sessionStorage.getItem('callupViewMode') || 'list';
+  const SUPABASE_URL='https://xwbxsggggpwstqyergee.supabase.co';
+  const SUPABASE_KEY='sb_publishable_iEMcWCDYoLckYFPIczvEbw_GYFnIT1x';
+  const CLOUD_MARKER_KEY='spm_u18_r2_cloud_updated_at';
+  let cloud=null, currentSession=null, syncTimer=null, syncing=false, lastCloudPayload='';
+  function canEdit(){ return !!(navigator.onLine && currentSession?.user?.id); }
+
 
   function load(){ try { const x=JSON.parse(localStorage.getItem(APP_KEY)); if(x && x.players && x.matches){ x.version=VERSION; x.players=(x.players||[]).map(p=>({...p,active:p.active!==false})); x.matches=(x.matches||[]).map(m=>({...m,status:m.status||((m.goalsFor!==null&&m.goalsFor!==undefined&&m.goalsAgainst!==null&&m.goalsAgainst!==undefined)?'Terminé':'À venir')})); x.yellows=x.yellows||[]; x.reds=(x.reds||[]).map(r=>({...r,closed:!!r.closed,firstPurgeMatchId:r.firstPurgeMatchId||''})); x.callups=x.callups||{}; Object.values(x.callups).forEach(byP=>Object.values(byP||{}).forEach(c=>{if(c?.status==='Convoqué') c.status='Remplaçant';})); x.stats=x.stats||{}; x.lineups=x.lineups||{}; x.settings={yellowWindowMonths:3,yellowThreshold:3,...(x.settings||{})}; return x; } return freshState(); } catch(e){ return freshState(); } }
-  function save(){ localStorage.setItem(APP_KEY, JSON.stringify(state)); render(); }
+  function save(){ localStorage.setItem(APP_KEY, JSON.stringify(state)); render(); scheduleCloudSave(); }
   function todayISO(){ const d=new Date(); return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-'); }
   function parseDate(s){ if(!s) return null; const [y,m,d]=s.split('-').map(Number); return new Date(y,m-1,d,12,0,0); }
   function fmt(s){ const d=parseDate(s); return d ? new Intl.DateTimeFormat('fr-FR',{weekday:'short',day:'2-digit',month:'2-digit',year:'numeric'}).format(d) : '—'; }
@@ -701,7 +721,9 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}body{overscroll-behavio
       return `<div class="sub"><span class="n">${num||'—'}</span><strong>${esc(p.name)}</strong><span class="ys">${ys}</span>${lineupRoleLabels(lu,p.id)}</div>`;
     }).join('')||'<div class="muted">Aucun remplaçant</div>';
     const title=`${esc(m.label)}${m.opponent?' · '+esc(m.opponent):''}`;
-    const html=`<!doctype html><html lang="fr"><head><meta charset="utf-8"><title>${title}</title><style>@page{size:A4 landscape;margin:10mm}*{box-sizing:border-box}body{font-family:Arial,sans-serif;color:#13271d;margin:0}.head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:8px}.head h1{font-size:22px;margin:0}.head p{margin:3px 0 0;color:#56665e;font-size:12px}.formation{font-weight:800}.grid{display:grid;grid-template-columns:2.2fr .8fr;gap:12px}.pitch{position:relative;height:150mm;background:#2f7d4f;border:2px solid #d9efe1;border-radius:8px;overflow:hidden}.pitch:before{content:'';position:absolute;left:50%;top:0;bottom:0;border-left:1px solid rgba(255,255,255,.8)}.pitch:after{content:'';position:absolute;left:50%;top:50%;width:70px;height:70px;border:1px solid rgba(255,255,255,.8);border-radius:50%;transform:translate(-50%,-50%)}.box{position:absolute;top:22%;height:56%;width:54px;border:1px solid rgba(255,255,255,.8)}.box.l{left:0;border-left:0}.box.r{right:0;border-right:0}.goal{position:absolute;top:38%;height:24%;width:10px;border:1px solid rgba(255,255,255,.9)}.goal.l{left:0;border-left:0}.goal.r{right:0;border-right:0}.pp{position:absolute;transform:translate(-50%,-50%);width:86px;text-align:center}.marks{height:10px;display:flex;justify-content:center;gap:2px;align-items:center}.y{display:inline-block;width:5px;height:7px;background:#f1c40f;border:1px solid rgba(0,0,0,.15);border-radius:1px}.c{display:inline-flex;width:12px;height:12px;border-radius:50%;align-items:center;justify-content:center;background:#fff;color:#0b5f3b;font-size:7px}.tag{display:grid;grid-template-columns:22px 1fr;background:#fff;border-radius:6px;overflow:hidden;border:1px solid #fff}.tag span{background:#183428;color:#fff;font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center}.tag strong{font-size:8px;padding:5px 3px;line-height:1.1}.side{display:flex;flex-direction:column;gap:8px}.card{border:1px solid #dfe7e2;border-radius:8px;padding:8px}.card h2{font-size:12px;margin:0 0 6px}.sub{display:grid;grid-template-columns:26px 1fr auto auto;gap:5px;align-items:center;padding:4px 0;border-bottom:1px solid #edf1ee;font-size:10px}.sub:last-child{border-bottom:0}.n{background:#183428;color:#fff;border-radius:4px;text-align:center;padding:3px}.ys{display:flex;gap:1px}.roles div{font-size:10px;margin:4px 0}.role-chip{display:inline-block;padding:1px 4px;border-radius:999px;background:#e7f2fb;color:#1e5d8e;font-size:7px;font-weight:800}.muted{color:#6b7972;font-size:10px}@media print{button{display:none}}</style></head><body><div class="head"><div><h1>Saint-Palais-sur-Mer U18 R2</h1><p>${title} · ${fmt(m.date)} · ${esc(m.venue)}</p></div><div class="formation">Formation ${esc(lu.formation)}</div></div><div class="grid"><div class="pitch"><div class="box l"></div><div class="box r"></div><div class="goal l"></div><div class="goal r"></div>${field}</div><div class="side"><div class="card"><h2>Remplaçants</h2>${subs}</div><div class="card roles"><h2>Responsabilités</h2><div><b>Capitaine :</b> ${roleName(lu.roles?.captainId)}</div><div><b>Penalty :</b> ${roleName(lu.roles?.penaltyId)}</div><div><b>Coups francs :</b> ${roleName(lu.roles?.freeKickId)}</div><div><b>Corners :</b> ${roleName(lu.roles?.cornerId)}</div></div></div></div><script>setTimeout(()=>window.print(),250)<\/script></body></html>`;
+    const html=`<!doctype html><html lang="fr"><head><meta charset="utf-8"><title>${title}</title><style>@page{size:A4 landscape;margin:10mm}*{box-sizing:border-box}body{font-family:Arial,sans-serif;color:#13271d;margin:0}.head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:8px}.head h1{font-size:22px;margin:0}.head p{margin:3px 0 0;color:#56665e;font-size:12px}.formation{font-weight:800}.grid{display:grid;grid-template-columns:2.2fr .8fr;gap:12px}.pitch{position:relative;height:150mm;background:#2f7d4f;border:2px solid #d9efe1;border-radius:8px;overflow:hidden}.pitch:before{content:'';position:absolute;left:50%;top:0;bottom:0;border-left:1px solid rgba(255,255,255,.8)}.pitch:after{content:'';position:absolute;left:50%;top:50%;width:70px;height:70px;border:1px solid rgba(255,255,255,.8);border-radius:50%;transform:translate(-50%,-50%)}.box{position:absolute;top:22%;height:56%;width:54px;border:1px solid rgba(255,255,255,.8)}.box.l{left:0;border-left:0}.box.r{right:0;border-right:0}.goal{position:absolute;top:38%;height:24%;width:10px;border:1px solid rgba(255,255,255,.9)}.goal.l{left:0;border-left:0}.goal.r{right:0;border-right:0}.pp{position:absolute;transform:translate(-50%,-50%);width:86px;text-align:center}.marks{height:10px;display:flex;justify-content:center;gap:2px;align-items:center}.y{display:inline-block;width:5px;height:7px;background:#f1c40f;border:1px solid rgba(0,0,0,.15);border-radius:1px}.c{display:inline-flex;width:12px;height:12px;border-radius:50%;align-items:center;justify-content:center;background:#fff;color:#0b5f3b;font-size:7px}.tag{display:grid;grid-template-columns:22px 1fr;background:#fff;border-radius:6px;overflow:hidden;border:1px solid #fff}.tag span{background:#183428;color:#fff;font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center}.tag strong{font-size:8px;padding:5px 3px;line-height:1.1}.side{display:flex;flex-direction:column;gap:8px}.card{border:1px solid #dfe7e2;border-radius:8px;padding:8px}.card h2{font-size:12px;margin:0 0 6px}.sub{display:grid;grid-template-columns:26px 1fr auto auto;gap:5px;align-items:center;padding:4px 0;border-bottom:1px solid #edf1ee;font-size:10px}.sub:last-child{border-bottom:0}.n{background:#183428;color:#fff;border-radius:4px;text-align:center;padding:3px}.ys{display:flex;gap:1px}.roles div{font-size:10px;margin:4px 0}.role-chip{display:inline-block;padding:1px 4px;border-radius:999px;background:#e7f2fb;color:#1e5d8e;font-size:7px;font-weight:800}.muted{color:#6b7972;font-size:10px}@media print{button{display:none}}
+.header-actions{display:flex;gap:8px;align-items:center}.sync-badge{font-size:10px;font-weight:800;padding:4px 7px;border-radius:999px;background:#eef3f0;color:#466157}.sync-badge.ok{background:#e1f4e9;color:#17603c}.sync-badge.warn{background:#fff4d6;color:#a76300}.readonly-banner{position:sticky;top:68px;z-index:9;margin:0 auto 8px;max-width:880px;padding:8px 14px;border-radius:12px;background:#fff4d6;color:#754c00;font-size:12px;font-weight:800;display:none}.readonly-mode .readonly-banner{display:block}.auth-status{font-size:12px;color:var(--muted);margin:-4px 0 10px}.cloud-ok{color:var(--green);font-weight:800}.cloud-warn{color:var(--amber);font-weight:800}@media(max-width:640px){.header-actions .btn{padding:8px 9px;font-size:11px}.app-header h1{font-size:22px}}
+</style></head><body><div class="head"><div><h1>Saint-Palais-sur-Mer U18 R2</h1><p>${title} · ${fmt(m.date)} · ${esc(m.venue)}</p></div><div class="formation">Formation ${esc(lu.formation)}</div></div><div class="grid"><div class="pitch"><div class="box l"></div><div class="box r"></div><div class="goal l"></div><div class="goal r"></div>${field}</div><div class="side"><div class="card"><h2>Remplaçants</h2>${subs}</div><div class="card roles"><h2>Responsabilités</h2><div><b>Capitaine :</b> ${roleName(lu.roles?.captainId)}</div><div><b>Penalty :</b> ${roleName(lu.roles?.penaltyId)}</div><div><b>Coups francs :</b> ${roleName(lu.roles?.freeKickId)}</div><div><b>Corners :</b> ${roleName(lu.roles?.cornerId)}</div></div></div></div><script>setTimeout(()=>window.print(),250)<\/script></body></html>`;
     const w=window.open('','_blank','width=1200,height=800');
     if(!w){toast('Fenêtre d’impression bloquée');return;}
     w.document.open();w.document.write(html);w.document.close();
@@ -843,7 +865,99 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}body{overscroll-behavio
     }
   }
 
-  function persistQuiet(){ localStorage.setItem(APP_KEY,JSON.stringify(state)); }
+  function persistQuiet(){ localStorage.setItem(APP_KEY,JSON.stringify(state)); scheduleCloudSave(); }
+
+  function updateAccessUI(){
+    const editable=canEdit();
+    document.body.classList.toggle('readonly-mode',!editable);
+    const btn=document.getElementById('authBtn');
+    if(btn) btn.textContent=currentSession?.user?.email ? (navigator.onLine?'✓ '+currentSession.user.email.split('@')[0]:'Hors ligne') : 'Connexion';
+    const cur=document.getElementById('authCurrent');
+    if(cur) cur.innerHTML=currentSession?.user?.email ? `<span class="${navigator.onLine?'cloud-ok':'cloud-warn'}">${navigator.onLine?'Connecté · synchronisation active':'Connecté localement · lecture seule hors ligne'}</span><br>${esc(currentSession.user.email)}` : 'Non connecté';
+    const so=document.getElementById('signOutBtn'); if(so) so.hidden=!currentSession;
+  }
+
+  async function initCloud(){
+    if(!navigator.onLine){updateAccessUI();return;}
+    try{
+      const mod=await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm');
+      cloud=mod.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+      const {data}=await cloud.auth.getSession(); currentSession=data.session||null; updateAccessUI();
+      cloud.auth.onAuthStateChange((event,session)=>{currentSession=session||null;updateAccessUI();if(session&&navigator.onLine)setTimeout(()=>syncOnLogin(),0);});
+      if(currentSession) await syncOnLogin();
+    }catch(e){console.warn('Cloud indisponible',e);updateAccessUI();}
+  }
+
+  async function syncOnLogin(){
+    if(!cloud||!canEdit()||syncing)return; syncing=true;
+    try{
+      const uid=currentSession.user.id;
+      const {data,error}=await cloud.from('team_state').select('state,updated_at').eq('user_id',uid).maybeSingle();
+      if(error) throw error;
+      if(data?.state){
+        const marker=localStorage.getItem(CLOUD_MARKER_KEY);
+        if(!marker || data.updated_at>marker){
+          state=data.state; state.version=VERSION; localStorage.setItem(APP_KEY,JSON.stringify(state)); localStorage.setItem(CLOUD_MARKER_KEY,data.updated_at); lastCloudPayload=JSON.stringify(state); render(); toast('Données cloud restaurées');
+        }
+      }else{
+        await pushCloud(true); toast('Première sauvegarde cloud créée');
+      }
+    }catch(e){console.error(e);toast('Synchronisation cloud impossible');}
+    finally{syncing=false;updateAccessUI();}
+  }
+
+  function scheduleCloudSave(){
+    if(!canEdit()||!cloud)return;
+    clearTimeout(syncTimer); syncTimer=setTimeout(()=>pushCloud(false),900);
+  }
+
+  async function pushCloud(force=false){
+    if(!cloud||!canEdit()||syncing)return;
+    const payload=JSON.stringify(state); if(!force&&payload===lastCloudPayload)return;
+    syncing=true;
+    try{
+      const uid=currentSession.user.id, snapshot=JSON.parse(payload);
+      const {data,error}=await cloud.from('team_state').upsert({user_id:uid,state:snapshot,app_version:VERSION,updated_at:new Date().toISOString()},{onConflict:'user_id'}).select('updated_at').single();
+      if(error) throw error;
+      const h=await cloud.from('team_state_history').insert({user_id:uid,state:snapshot,app_version:VERSION}); if(h.error) throw h.error;
+      lastCloudPayload=payload; localStorage.setItem(CLOUD_MARKER_KEY,data.updated_at);
+    }catch(e){console.error(e);toast('Sauvegarde cloud non effectuée');}
+    finally{syncing=false;updateAccessUI();}
+  }
+
+  async function signIn(){
+    if(!navigator.onLine){toast('Connexion Internet requise');return;} if(!cloud)await initCloud(); if(!cloud){toast('Service de connexion indisponible');return;}
+    const email=document.getElementById('authEmail').value.trim(),password=document.getElementById('authPassword').value;
+    if(!email||!password){toast('Email et mot de passe requis');return;}
+    const {error}=await cloud.auth.signInWithPassword({email,password}); if(error)toast(error.message); else {document.getElementById('authDialog').close();toast('Connecté');}
+  }
+  async function signUp(){
+    if(!navigator.onLine){toast('Connexion Internet requise');return;} if(!cloud)await initCloud(); if(!cloud)return;
+    const email=document.getElementById('authEmail').value.trim(),password=document.getElementById('authPassword').value;
+    if(!email||password.length<8){toast('Email valide et mot de passe de 8 caractères minimum');return;}
+    const {data,error}=await cloud.auth.signUp({email,password,options:{emailRedirectTo:location.origin+location.pathname}});
+    if(error)toast(error.message); else if(data.session){toast('Compte créé et connecté');document.getElementById('authDialog').close();} else toast('Compte créé : vérifie ton email puis connecte-toi');
+  }
+  async function signOut(){ if(cloud){await cloud.auth.signOut();currentSession=null;updateAccessUI();document.getElementById('authDialog').close();toast('Déconnecté · lecture seule');} }
+
+  function readonlyAllowed(el){
+    if(!el)return true;
+    if(el.closest('#authDialog')||el.id==='authBtn'||el.id==='backupBtn'||el.id==='exportBtn')return true;
+    if(el.closest('.bottom-nav'))return true;
+    if(el.matches('[data-stats-mode],#statsMatchSelect,#callupMatchSelect,#refDate,.player-name-btn'))return true;
+    const id=(el.id||'').toLowerCase(),txt=(el.textContent||'').trim().toLowerCase();
+    if(id.includes('copy')||id.includes('print')||txt.startsWith('copier')||txt.startsWith('imprimer')||txt==='×'||el.value==='cancel')return true;
+    return false;
+  }
+  ['click','change','input','submit'].forEach(type=>document.addEventListener(type,e=>{
+    if(canEdit())return;
+    const el=e.target.closest?.('button,input,select,textarea,form,a')||e.target;
+    if(readonlyAllowed(el))return;
+    if(el?.matches?.('button,input,select,textarea,form,a')){e.preventDefault();e.stopImmediatePropagation();toast(navigator.onLine?'Connecte-toi pour modifier':'Hors connexion : consultation uniquement');}
+  },true));
+
+  window.addEventListener('online',()=>{updateAccessUI();initCloud();});
+  window.addEventListener('offline',()=>updateAccessUI());
 
   function openCloseMatch(id){
     const m=match(id); if(!m)return;
@@ -931,9 +1045,11 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}body{overscroll-behavio
     playerProfile:openPlayerProfile
   };
 
-
-  if('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('sw.js').then(reg=>reg.update().catch(()=>{})).catch(()=>{});
-  render();
+  document.getElementById('authBtn').onclick=()=>{updateAccessUI();document.getElementById('authDialog').showModal();};
+  document.getElementById('signInBtn').onclick=signIn;
+  document.getElementById('signUpBtn').onclick=signUp;
+  document.getElementById('signOutBtn').onclick=signOut;
+  render(); updateAccessUI(); initCloud();
 })();
 
 </script>
