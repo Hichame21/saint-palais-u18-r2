@@ -896,6 +896,24 @@
     }catch(e){console.error(e);ownerVerified=false;updateAccessUI();toast('Vérification du compte impossible');return false;}
   }
 
+  async function loadPublicState(silent=false){
+    if(!cloud||!navigator.onLine)return false;
+    try{
+      const {data,error}=await cloud.from('public_team_state').select('state,updated_at').eq('singleton_id',1).maybeSingle();
+      if(error) throw error;
+      if(data?.state){
+        state=data.state; state.version=VERSION;
+        localStorage.setItem(APP_KEY,JSON.stringify(state));
+        localStorage.setItem(CLOUD_MARKER_KEY,data.updated_at||'');
+        lastCloudPayload='';
+        render(); updateAccessUI();
+        if(!silent)toast('Données de l’équipe actualisées');
+        return true;
+      }
+    }catch(e){console.warn('Lecture publique indisponible',e);}
+    return false;
+  }
+
   async function initCloud(){
     if(!navigator.onLine){updateAccessUI();return;}
     try{
@@ -904,8 +922,16 @@
       const {data}=await cloud.auth.getSession(); currentSession=data.session||null;
       if(currentSession) await ensureOwner(); else ownerVerified=false;
       updateAccessUI();
-      cloud.auth.onAuthStateChange((event,session)=>{currentSession=session||null;ownerVerified=false;updateAccessUI();if(session&&navigator.onLine)setTimeout(async()=>{if(await ensureOwner()) await syncOnLogin();},0);});
+      cloud.auth.onAuthStateChange((event,session)=>{
+        currentSession=session||null; ownerVerified=false; updateAccessUI();
+        if(session&&navigator.onLine){
+          setTimeout(async()=>{if(await ensureOwner()) await syncOnLogin(); else await loadPublicState(true);},0);
+        }else if(!session&&navigator.onLine){
+          setTimeout(()=>loadPublicState(true),0);
+        }
+      });
       if(currentSession&&ownerVerified) await syncOnLogin();
+      else await loadPublicState(true);
     }catch(e){console.warn('Cloud indisponible',e);ownerVerified=false;updateAccessUI();}
   }
 
@@ -941,6 +967,7 @@
       const {data,error}=await cloud.from('team_state').upsert({user_id:uid,state:snapshot,app_version:VERSION,updated_at:new Date().toISOString()},{onConflict:'user_id'}).select('updated_at').single();
       if(error) throw error;
       const h=await cloud.from('team_state_history').insert({user_id:uid,state:snapshot,app_version:VERSION}); if(h.error) throw h.error;
+      const pub=await cloud.from('public_team_state').upsert({singleton_id:1,state:snapshot,app_version:VERSION,updated_at:data.updated_at},{onConflict:'singleton_id'}); if(pub.error) throw pub.error;
       lastCloudPayload=payload; localStorage.setItem(CLOUD_MARKER_KEY,data.updated_at);
     }catch(e){console.error(e);toast('Sauvegarde cloud non effectuée');}
     finally{syncing=false;updateAccessUI();}
@@ -974,7 +1001,14 @@
       }
     }else toast('Compte créé : vérifie ton email puis connecte-toi. Le premier compte validé deviendra l’unique propriétaire.');
   }
-  async function signOut(){ if(cloud){await cloud.auth.signOut();currentSession=null;ownerVerified=false;updateAccessUI();document.getElementById('authDialog').close();toast('Déconnecté · lecture seule');} }
+  async function signOut(){
+    if(cloud){
+      await cloud.auth.signOut(); currentSession=null; ownerVerified=false; updateAccessUI();
+      document.getElementById('authDialog').close();
+      if(navigator.onLine) await loadPublicState(true);
+      toast('Déconnecté · lecture seule');
+    }
+  }
 
   function readonlyAllowed(el){
     if(!el)return true;
