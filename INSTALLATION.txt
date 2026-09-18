@@ -1,0 +1,22 @@
+SAINT-PALAIS U18 R2 — VERSION MOBILE PWA
+
+CONTENU
+- index.html : application
+- manifest.webmanifest : installation iPhone
+- sw.js : mode hors connexion
+- icons/ : icônes d'écran d'accueil
+
+IMPORTANT POUR LES DONNÉES
+L'application conserve la même clé de stockage que les versions précédentes : spm_u18_r2_v1.
+Sur le MÊME domaine, une mise à jour conserve les données automatiquement.
+Pour passer d'un fichier local / ancien domaine vers l'iPhone :
+1. Dans l'ancienne application, toucher l'icône Sauvegarde puis Exporter une sauvegarde JSON.
+2. Installer la PWA sur l'iPhone.
+3. Dans la PWA, ouvrir Sauvegarde puis Importer une sauvegarde et sélectionner le JSON.
+
+INSTALLATION IPHONE
+Cette PWA doit être publiée sur une adresse HTTPS stable.
+Dans Safari : ouvrir l'adresse > Partager > Sur l'écran d'accueil > activer « Ouvrir comme app web » > Ajouter.
+
+MISES À JOUR
+Garder la même URL/domaine. Remplacer les fichiers du site par la nouvelle version. Les données locales restent liées à ce domaine.
