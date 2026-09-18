@@ -733,6 +733,200 @@
     }catch(e){toast('Copie impossible sur ce navigateur');}
   }
 
+
+  function roundedRect(ctx,x,y,w,h,r,fill,stroke){
+    const rr=Math.min(r,w/2,h/2);
+    ctx.beginPath();
+    ctx.moveTo(x+rr,y);
+    ctx.arcTo(x+w,y,x+w,y+h,rr);
+    ctx.arcTo(x+w,y+h,x,y+h,rr);
+    ctx.arcTo(x,y+h,x,y,rr);
+    ctx.arcTo(x,y,x+w,y,rr);
+    ctx.closePath();
+    if(fill){ctx.fillStyle=fill;ctx.fill();}
+    if(stroke){ctx.strokeStyle=stroke;ctx.stroke();}
+  }
+
+  function wrapText(ctx,text,maxWidth){
+    const words=String(text||'').split(/\s+/).filter(Boolean);
+    const lines=[]; let line='';
+    words.forEach(word=>{
+      const test=line?line+' '+word:word;
+      if(ctx.measureText(test).width<=maxWidth||!line) line=test;
+      else { lines.push(line); line=word; }
+    });
+    if(line) lines.push(line);
+    return lines;
+  }
+
+  function drawYellowCards(ctx,x,y,count){
+    for(let i=0;i<count;i++){
+      ctx.fillStyle='#f1c40f';
+      ctx.fillRect(x+i*12,y,8,12);
+      ctx.strokeStyle='rgba(0,0,0,.18)';
+      ctx.strokeRect(x+i*12,y,8,12);
+    }
+  }
+
+  function drawBenchChip(ctx,x,y,w,h,num,name,yc,roles){
+    roundedRect(ctx,x,y,w,h,14,'#ffffff','#dfe7e2');
+    roundedRect(ctx,x+10,y+10,42,h-20,10,'#183428');
+    ctx.fillStyle='#ffffff';
+    ctx.font='bold 18px Arial';
+    ctx.textAlign='center';
+    ctx.textBaseline='middle';
+    ctx.fillText(num||'—',x+31,y+h/2);
+
+    ctx.textAlign='left';
+    ctx.textBaseline='top';
+    ctx.fillStyle='#13271d';
+    ctx.font='bold 18px Arial';
+    const textX=x+64;
+    const maxTextW=w-74-(yc?((yc*12)+8):0);
+    const lines=wrapText(ctx,name,maxTextW);
+    ctx.fillText(lines[0]||'',textX,y+12);
+    if(lines[1]){ ctx.font='14px Arial'; ctx.fillStyle='#4f6258'; ctx.fillText(lines[1],textX,y+33); }
+
+    if(roles && roles.length){
+      let rx=textX, ry=y+h-24;
+      roles.forEach(role=>{
+        const tw=Math.max(24,ctx.measureText(role).width+16);
+        roundedRect(ctx,rx,ry,tw,18,9,'#e7f2fb');
+        ctx.fillStyle='#1e5d8e';
+        ctx.font='bold 11px Arial';
+        ctx.textAlign='center';
+        ctx.textBaseline='middle';
+        ctx.fillText(role,rx+tw/2,ry+9);
+        rx += tw+6;
+      });
+      ctx.textAlign='left';
+      ctx.textBaseline='top';
+    }
+    if(yc){ drawYellowCards(ctx,x+w-(yc*12)-12,y+12,yc); }
+  }
+
+  async function shareLineupImage(matchId){
+    const m=match(matchId); if(!m)return;
+    const lu=lineupForMatch(matchId,[]); const slots=formationSlots(lu.formation);
+    const yellowCounts=Object.fromEntries(activePlayers().map(p=>[p.id,activeYellows(p.id,m.date).length]));
+    const roleNames={captainId:'C',penaltyId:'P',freeKickId:'CF',cornerId:'CO'};
+    const rolesForPlayer=(pid)=>Object.entries(roleNames).filter(([k,v])=>lu.roles?.[k]===pid).map(([,v])=>v);
+    const subs=activePlayers().filter(p=>state.callups[matchId]?.[p.id]?.status==='Remplaçant').map(p=>({
+      id:p.id,name:p.name,num:lu.playerNumbers?.[p.id]??p.number??'',yc:yellowCounts[p.id]||0,roles:rolesForPlayer(p.id)
+    }));
+    const title=`${m.label}${m.opponent?' · '+m.opponent:''}`;
+
+    const canvas=document.createElement('canvas');
+    canvas.width=1800; canvas.height=1200;
+    const ctx=canvas.getContext('2d');
+    ctx.fillStyle='#f3f7f4'; ctx.fillRect(0,0,canvas.width,canvas.height);
+
+    ctx.fillStyle='#13271d';
+    ctx.font='bold 38px Arial';
+    ctx.textAlign='left'; ctx.textBaseline='top';
+    ctx.fillText('Saint-Palais-sur-Mer U18 R2',50,34);
+    ctx.font='22px Arial'; ctx.fillStyle='#4f6258';
+    ctx.fillText(`${title} · ${fmt(m.date)} · ${m.venue}`,50,84);
+    ctx.font='bold 22px Arial'; ctx.fillStyle='#0b5f3b';
+    ctx.fillText(`Formation ${lu.formation}`,1490,46);
+
+    const pitchX=50, pitchY=140, pitchW=1120, pitchH=980;
+    roundedRect(ctx,pitchX,pitchY,pitchW,pitchH,26,'#2f7d4f','#d9efe1');
+    ctx.strokeStyle='rgba(255,255,255,.85)'; ctx.lineWidth=3;
+    ctx.beginPath(); ctx.moveTo(pitchX+pitchW/2,pitchY); ctx.lineTo(pitchX+pitchW/2,pitchY+pitchH); ctx.stroke();
+    ctx.beginPath(); ctx.arc(pitchX+pitchW/2,pitchY+pitchH/2,90,0,Math.PI*2); ctx.stroke();
+    ctx.strokeRect(pitchX,pitchY+pitchH*0.22,85,pitchH*0.56);
+    ctx.strokeRect(pitchX+pitchW-85,pitchY+pitchH*0.22,85,pitchH*0.56);
+    ctx.strokeRect(pitchX,pitchY+pitchH*0.38,18,pitchH*0.24);
+    ctx.strokeRect(pitchX+pitchW-18,pitchY+pitchH*0.38,18,pitchH*0.24);
+
+    slots.forEach(s=>{
+      const e=lu.slots?.[s.id]; if(!e?.playerId)return;
+      const p=player(e.playerId); if(!p)return;
+      const pos=slotPosition(lu,s);
+      const x=pitchX+(pos.x/100)*pitchW;
+      const y=pitchY+(pos.y/100)*pitchH;
+      const num=lu.playerNumbers?.[p.id]??e.number??p.number??'';
+      const yc=yellowCounts[p.id]||0;
+      const roles=rolesForPlayer(p.id);
+      const boxW=150, boxH=54;
+      // markers
+      if(roles.includes('C')){
+        ctx.fillStyle='#ffffff';
+        ctx.beginPath(); ctx.arc(x,y-48,10,0,Math.PI*2); ctx.fill();
+        ctx.fillStyle='#0b5f3b'; ctx.font='bold 11px Arial'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText('C',x,y-48);
+      }
+      if(yc){ drawYellowCards(ctx,x-(yc*12)/2,y-65,yc); }
+      // box
+      roundedRect(ctx,x-boxW/2,y-boxH/2,boxW,boxH,12,'#ffffff','#ffffff');
+      roundedRect(ctx,x-boxW/2,y-boxH/2,34,boxH,12,'#183428');
+      ctx.fillStyle='#ffffff'; ctx.font='bold 20px Arial'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(num||'—',x-boxW/2+17,y);
+      ctx.fillStyle='#13271d'; ctx.font='bold 14px Arial'; ctx.textAlign='left'; ctx.textBaseline='top';
+      const lines=wrapText(ctx,p.name,100);
+      ctx.fillText(lines[0]||'',x-boxW/2+42,y-12);
+      if(lines[1]){ ctx.font='12px Arial'; ctx.fillStyle='#4f6258'; ctx.fillText(lines[1],x-boxW/2+42,y+6); }
+      if(roles.filter(r=>r!=='C').length){
+        let rx=x+boxW/2-10; const otherRoles=roles.filter(r=>r!=='C').reverse();
+        otherRoles.forEach(role=>{
+          const tw=Math.max(22,ctx.measureText(role).width+14);
+          rx -= tw;
+          roundedRect(ctx,rx,y+10,tw,16,8,'#e7f2fb');
+          ctx.fillStyle='#1e5d8e'; ctx.font='bold 10px Arial'; ctx.textAlign='center'; ctx.textBaseline='middle';
+          ctx.fillText(role,rx+tw/2,y+18);
+          rx -= 4;
+        });
+      }
+    });
+
+    const sideX=1205, sideY=140, sideW=545, sideH=980;
+    roundedRect(ctx,sideX,sideY,sideW,sideH,20,'#ffffff','#dfe7e2');
+    ctx.fillStyle='#13271d'; ctx.font='bold 28px Arial'; ctx.textAlign='left'; ctx.textBaseline='top';
+    ctx.fillText(`Remplaçants · ${subs.length}`,sideX+24,sideY+24);
+    const chipW=236, chipH=88, gapX=18, gapY=16, startX=sideX+24, startY=sideY+72;
+    if(subs.length){
+      subs.forEach((s,idx)=>{
+        const col=idx%2, row=Math.floor(idx/2);
+        drawBenchChip(ctx,startX+col*(chipW+gapX),startY+row*(chipH+gapY),chipW,chipH,s.num,s.name,s.yc,s.roles);
+      });
+    } else {
+      ctx.fillStyle='#6b7972'; ctx.font='18px Arial'; ctx.fillText('Aucun remplaçant',startX,startY+12);
+    }
+
+    const roleY=sideY+sideH-180;
+    roundedRect(ctx,sideX+24,roleY,sideW-48,136,16,'#f8faf9','#dfe7e2');
+    ctx.fillStyle='#13271d'; ctx.font='bold 22px Arial'; ctx.fillText('Responsabilités',sideX+44,roleY+18);
+    ctx.font='18px Arial'; ctx.fillStyle='#4f6258';
+    const roleName=id=>player(id)?.name||'—';
+    [
+      ['Capitaine', roleName(lu.roles?.captainId)],
+      ['Penalty', roleName(lu.roles?.penaltyId)],
+      ['Coups francs', roleName(lu.roles?.freeKickId)],
+      ['Corners', roleName(lu.roles?.cornerId)]
+    ].forEach((row,i)=>{
+      const yy=roleY+56+i*18;
+      ctx.fillStyle='#13271d'; ctx.font='bold 16px Arial'; ctx.fillText(row[0]+' :',sideX+44,yy);
+      ctx.fillStyle='#4f6258'; ctx.font='16px Arial'; ctx.fillText(row[1],sideX+170,yy);
+    });
+
+    const blob = await new Promise(resolve=>canvas.toBlob(resolve,'image/jpeg',0.94));
+    if(!blob){ toast('Création du JPG impossible'); return; }
+    const fileName=`composition-${(m.label||'match').replace(/[^a-z0-9-_]+/gi,'-').toLowerCase()}-${m.date}.jpg`;
+    const file = new File([blob], fileName, {type:'image/jpeg'});
+    try{
+      if(navigator.canShare && navigator.canShare({files:[file]}) && navigator.share){
+        await navigator.share({files:[file], title:`Composition ${title}`, text:`Composition ${title}`});
+        toast('Composition partagée');
+        return;
+      }
+    }catch(err){ if(err && err.name==='AbortError') return; }
+
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url; a.download=fileName; a.click();
+    setTimeout(()=>URL.revokeObjectURL(url),1500);
+    toast('JPG téléchargé');
+  }
+
   function printLineup(matchId){
     const m=match(matchId); if(!m)return;
     const lu=lineupForMatch(matchId,[]); const slots=formationSlots(lu.formation);
@@ -855,7 +1049,7 @@
       return `<div class="lineup-slot" data-slot-id="${slot.id}" data-x="${pos.x}" data-y="${pos.y}" style="left:${pos.x}%;top:${pos.y}%"><button type="button" class="slot-role" data-drag-slot="${slot.id}" title="Déplacer ${slot.role} — glisser ou utiliser les flèches">↕ ${esc(slot.role)}</button><div class="slot-yellow-row">${isCaptain?'<span class="captain-badge">C</span>':''}${yellowBoxes(yc)}</div><div class="slot-control"><input class="slot-number-input" aria-label="Numéro ${slot.role}" type="number" min="1" max="99" inputmode="numeric" data-lineup-number="${slot.id}" value="${entry.number||''}" ${p?'':'disabled'} placeholder="#"><select class="slot-player-select" data-lineup-player="${slot.id}" aria-label="Joueur ${slot.role}">${opts}</select></div></div>`;
     }).join('');
     const assignedIds=new Set(Object.values(lineup.slots||{}).map(x=>x?.playerId).filter(Boolean));
-    const pitchHtml=`<div class="lineup-toolbar"><label>Formation<select id="formationSelect">${formationOptions}</select></label><div class="lineup-share-actions"><button type="button" id="copyLineup" class="btn secondary small">Copier la compo</button><button type="button" id="printLineup" class="btn secondary small">Imprimer / PDF</button><button type="button" id="resetPositions" class="btn secondary small position-reset">Réinitialiser positions</button></div><div class="lineup-help"><strong>Placement libre :</strong> attrape le petit ↕ au-dessus d’une étiquette pour la déplacer. Les flèches du clavier permettent aussi un réglage fin.</div></div>${rolesHtml}${assignedIds.size!==11?`<div class="pitch-warning">${assignedIds.size}/11 joueurs placés sur le terrain.</div>`:''}<div class="pitch-wrap"><div class="pitch-scroll"><div class="pitch"><div class="pitch-box left"></div><div class="pitch-box right"></div><div class="pitch-goal left"></div><div class="pitch-goal right"></div>${slotNodes}</div></div><div class="bench-grid"><div class="bench-card"><h3>Remplaçants · ${substitutes.length}</h3><div class="bench-list">${substitutes.map(p=>{const num=lineup.playerNumbers?.[p.id]??p.number??'';const yc=yellowCounts[p.id]||0;return `<div class="bench-player numbered"><input class="bench-number-input" type="number" min="1" max="99" inputmode="numeric" aria-label="Numéro ${esc(p.name)}" data-bench-number="${p.id}" value="${num}" placeholder="#"><div class="bench-player-main"><div class="bench-role-row">${lineupRoleLabels(lineup,p.id)}${yellowBoxes(yc)}</div><button class="player-name-btn" onclick="window.App.playerProfile('${p.id}')">${esc(p.name)}</button></div><span class="pill blue">R</span></div>`}).join('')||'<span class="muted">Aucun remplaçant.</span>'}</div></div><div class="bench-card"><h3>Indisponibles / suspendus</h3><div class="bench-list">${unavailable.map(p=>`<div class="bench-player unavailable"><button class="player-name-btn" onclick="window.App.playerProfile('${p.id}')">${esc(p.name)}</button><span class="pill amber">Indispo.</span></div>`).join('')}${suspended.map(p=>`<div class="bench-player suspended"><button class="player-name-btn" onclick="window.App.playerProfile('${p.id}')">${esc(p.name)}</button><span class="pill red">Suspendu</span></div>`).join('')||(!unavailable.length?'<span class="muted">Aucun.</span>':'')}</div></div></div></div>`;
+    const pitchHtml=`<div class="lineup-toolbar"><label>Formation<select id="formationSelect">${formationOptions}</select></label><div class="lineup-share-actions"><button type="button" id="copyLineup" class="btn secondary small">Copier la compo</button><button type="button" id="shareLineup" class="btn secondary small">Partager</button><button type="button" id="resetPositions" class="btn secondary small position-reset">Réinitialiser positions</button></div><div class="lineup-help"><strong>Placement libre :</strong> attrape le petit ↕ au-dessus d’une étiquette pour la déplacer. Les flèches du clavier permettent aussi un réglage fin.</div></div>${rolesHtml}${assignedIds.size!==11?`<div class="pitch-warning">${assignedIds.size}/11 joueurs placés sur le terrain.</div>`:''}<div class="pitch-wrap"><div class="pitch-scroll"><div class="pitch"><div class="pitch-box left"></div><div class="pitch-box right"></div><div class="pitch-goal left"></div><div class="pitch-goal right"></div>${slotNodes}</div></div><div class="bench-grid"><div class="bench-card"><h3>Remplaçants · ${substitutes.length}</h3><div class="bench-list">${substitutes.map(p=>{const num=lineup.playerNumbers?.[p.id]??p.number??'';const yc=yellowCounts[p.id]||0;return `<div class="bench-player numbered"><input class="bench-number-input" type="number" min="1" max="99" inputmode="numeric" aria-label="Numéro ${esc(p.name)}" data-bench-number="${p.id}" value="${num}" placeholder="#"><div class="bench-player-main"><div class="bench-role-row">${lineupRoleLabels(lineup,p.id)}${yellowBoxes(yc)}</div><button class="player-name-btn" onclick="window.App.playerProfile('${p.id}')">${esc(p.name)}</button></div><span class="pill blue">R</span></div>`}).join('')||'<span class="muted">Aucun remplaçant.</span>'}</div></div><div class="bench-card"><h3>Indisponibles / suspendus</h3><div class="bench-list">${unavailable.map(p=>`<div class="bench-player unavailable"><button class="player-name-btn" onclick="window.App.playerProfile('${p.id}')">${esc(p.name)}</button><span class="pill amber">Indispo.</span></div>`).join('')}${suspended.map(p=>`<div class="bench-player suspended"><button class="player-name-btn" onclick="window.App.playerProfile('${p.id}')">${esc(p.name)}</button><span class="pill red">Suspendu</span></div>`).join('')||(!unavailable.length?'<span class="muted">Aucun.</span>':'')}</div></div></div></div>`;
     const listHtml=`<div class="table-wrap"><table class="table"><thead><tr><th>Joueur</th><th>Statut</th><th>Prés.</th><th>Non tit.</th><th>Note</th></tr></thead><tbody>${activePlayers().map(p=>{const susp=suspensionForPlayerAtMatch(p.id,sel);const val=susp?'Suspendu':(cu[p.id]?.status||'Non convoqué');const total=attendanceTotals(p.id,m.date);const rowClass=val==='Titulaire'?'status-titulaire':val==='Remplaçant'?'status-remplacant':val==='Indisponible'?'status-indisponible':'';return `<tr class="callup-row ${rowClass}"><td><button class="player-name-btn" onclick="window.App.playerProfile('${p.id}')">${esc(p.name)}</button></td><td>${susp?'<span class="pill red">Suspendu</span>':`<select data-callup-player="${p.id}">${['Titulaire','Remplaçant','Non convoqué','Indisponible'].map(o=>`<option ${o===val?'selected':''}>${o}</option>`).join('')}</select>`}</td><td><strong>${total.present}</strong></td><td><strong>${total.nonStarter}</strong></td><td><input data-note-player="${p.id}" value="${esc(cu[p.id]?.note||'')}" placeholder="Optionnel"></td></tr>`}).join('')}</tbody></table></div><p class="muted" style="margin:9px 2px 0">Astuce : « Reprendre » copie la dernière convocation connue, mais respecte automatiquement les suspensions du match sélectionné.</p>`;
     el.innerHTML=`<div class="section-head"><h2>Convocations</h2><button class="btn secondary" id="copyCallup">Copier</button></div><div class="toolbar"><select id="callupMatchSelect">${ms.map(x=>`<option value="${x.id}" ${x.id===sel?'selected':''}>${esc(x.label)} · ${fmt(x.date)}${x.opponent?' · '+esc(x.opponent):''}</option>`).join('')}</select></div><div class="callup-tools"><button class="btn secondary" id="copyPrevious" ${prev?'':'disabled'}>${prev?`Reprendre ${esc(prev.label)}`:'Aucune convocation précédente'}</button><button class="btn secondary" id="resetCallup">Tout mettre non convoqué</button></div><div class="callup-summary"><span class="pill green">${counts.Titulaire} titulaires</span><span class="pill blue">${counts.Remplaçant} remplaçants</span><span class="pill">${counts['Non convoqué']} non convoqués</span><span class="pill amber">${counts.Indisponible} indisponibles</span>${counts.Suspendu?`<span class="pill red">${counts.Suspendu} suspendus</span>`:''}</div><div class="segmented callup-view-toggle"><button data-callup-view="list" class="${callupViewMode==='list'?'active':''}">Liste</button><button data-callup-view="pitch" class="${callupViewMode==='pitch'?'active':''}">Terrain</button></div>${callupViewMode==='pitch'?pitchHtml:listHtml}`;
     el.querySelector('#callupMatchSelect').onchange=e=>{sessionStorage.setItem('callupMatch',e.target.value);renderCallups();};
@@ -865,7 +1059,7 @@
     const fs=el.querySelector('#formationSelect'); if(fs)fs.onchange=e=>changeFormation(sel,e.target.value);
     const rp=el.querySelector('#resetPositions'); if(rp)rp.onclick=()=>resetLineupPositions(sel);
     const cl=el.querySelector('#copyLineup'); if(cl)cl.onclick=()=>copyLineupSummary(sel);
-    const pl=el.querySelector('#printLineup'); if(pl)pl.onclick=()=>printLineup(sel);
+    const sl=el.querySelector('#shareLineup'); if(sl)sl.onclick=()=>shareLineupImage(sel);
     el.querySelectorAll('[data-lineup-role]').forEach(s=>s.onchange=e=>setLineupRole(sel,e.target.dataset.lineupRole,e.target.value));
     if(callupViewMode==='pitch')enableLineupDragging(el,sel);
     el.querySelectorAll('[data-lineup-player]').forEach(s=>s.onchange=e=>setLineupPlayer(sel,e.target.dataset.lineupPlayer,e.target.value));
