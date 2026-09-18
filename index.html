@@ -20,18 +20,20 @@
 .match-roles{display:grid;grid-template-columns:repeat(4,minmax(120px,1fr));gap:7px;margin:8px 0 10px;padding:9px;background:#f7faf8;border:1px solid var(--line);border-radius:12px}.match-roles label{display:flex;flex-direction:column;gap:3px;font-size:9px;font-weight:900;color:#405249;text-transform:uppercase;letter-spacing:.03em}.match-roles select{width:100%;min-width:0;border:1px solid #ced9d2;border-radius:8px;padding:6px 7px;background:#fff;color:var(--ink);font-size:10px;text-transform:none;letter-spacing:0}.captain-badge{display:inline-flex;align-items:center;justify-content:center;width:12px;height:12px;border-radius:50%;background:#fff;color:#0b5f3b;border:1px solid #0b5f3b;font-size:7px;font-weight:950;line-height:1}.slot-yellow-row{gap:2px;padding-left:23px}.lineup-share-actions{display:flex;gap:6px;flex-wrap:wrap}.lineup-share-actions .btn{white-space:nowrap}.role-chip{display:inline-flex;align-items:center;justify-content:center;min-width:17px;height:13px;padding:0 3px;border-radius:999px;background:#e7f2fb;color:#1e5d8e;font-size:7px;font-weight:950;margin-left:3px}.bench-role-row{display:flex;align-items:center;gap:2px;min-height:9px;margin-bottom:1px}@media(max-width:760px){.match-roles{grid-template-columns:1fr 1fr}}
 
 
-.header-actions{display:flex;gap:8px;align-items:center}.sync-badge{font-size:10px;font-weight:800;padding:4px 7px;border-radius:999px;background:#eef3f0;color:#466157}.sync-badge.ok{background:#e1f4e9;color:#17603c}.sync-badge.warn{background:#fff4d6;color:#a76300}.readonly-banner{position:sticky;top:68px;z-index:9;margin:0 auto 8px;max-width:880px;padding:8px 14px;border-radius:12px;background:#fff4d6;color:#754c00;font-size:12px;font-weight:800;display:none}.readonly-mode .readonly-banner{display:block}.auth-status{font-size:12px;color:var(--muted);margin:-4px 0 10px}.cloud-ok{color:var(--green);font-weight:800}.cloud-warn{color:var(--amber);font-weight:800}@media(max-width:640px){.header-actions .btn{padding:8px 9px;font-size:11px}.app-header h1{font-size:22px}}
+.header-actions{display:flex;gap:8px;align-items:center}.sync-badge{font-size:10px;font-weight:800;padding:4px 7px;border-radius:999px;background:#eef3f0;color:#466157}.sync-badge.ok{background:#e1f4e9;color:#17603c}.sync-badge.warn{background:#fff4d6;color:#a76300}.readonly-banner{position:sticky;top:68px;z-index:9;margin:0 auto 8px;max-width:880px;padding:8px 14px;border-radius:12px;background:#fff4d6;color:#754c00;font-size:12px;font-weight:800;display:none}.readonly-mode .readonly-banner{display:block}.auth-status{font-size:12px;color:var(--muted);margin:-4px 0 10px}.cloud-ok{color:var(--green);font-weight:800}.cloud-warn{color:var(--amber);font-weight:800}
+.sync-badge{display:inline-flex;align-items:center;gap:4px;white-space:nowrap}.sync-badge.syncing{background:#eef3f0;color:#466157}.sync-badge.error{background:#fde8e8;color:#8b2525}.history-list{display:flex;flex-direction:column;gap:8px;max-height:260px;overflow:auto}.history-item{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 10px;border:1px solid var(--line);border-radius:11px;background:#f8faf9}.history-main{min-width:0}.history-main strong{display:block;font-size:12px}.history-main small{display:block;color:var(--muted);font-size:10px}.divider{height:1px;background:var(--line);margin:14px 0}.coach-box{padding:12px;border:1px solid var(--line);border-radius:14px;background:#f8faf9}.coach-box h3{font-size:13px;margin:0 0 6px}.backup-status{font-size:11px;padding:8px 10px;border-radius:10px;background:#eef3f0;color:#466157}.backup-status.ok{background:#e1f4e9;color:#17603c}.backup-status.warn{background:#fff4d6;color:#754c00}.backup-status.error{background:#fde8e8;color:#8b2525}@media(max-width:640px){.header-actions{gap:5px}.sync-badge{display:none}}
+@media(max-width:640px){.header-actions .btn{padding:8px 9px;font-size:11px}.app-header h1{font-size:22px}}
 </style>
 </head>
 <body>
   <header class="app-header">
     <div>
       <div class="eyebrow">SAINT-PALAIS-SUR-MER</div>
-      <h1>U18 R2 <small style="font-size:11px;color:#65756d;font-weight:700">V1.27</small></h1>
+      <h1>U18 R2 <small style="font-size:11px;color:#65756d;font-weight:700">V1.28</small></h1>
     </div>
-    <div class="header-actions"><button id="authBtn" class="btn small secondary" type="button">Connexion</button><button id="backupBtn" class="icon-btn" aria-label="Sauvegarde">↥</button></div>
+    <div class="header-actions"><span id="syncBadge" class="sync-badge">Local</span><button id="coachBtn" class="btn small secondary" type="button">Accès coach</button><button id="authBtn" class="btn small secondary" type="button">Connexion</button><button id="backupBtn" class="icon-btn" aria-label="Sauvegarde">↥</button></div>
   </header>
-  <div id="readonlyBanner" class="readonly-banner">Lecture seule — connecte-toi et garde une connexion Internet pour modifier.</div>
+  <div id="readonlyBanner" class="readonly-banner">Lecture seule — seul le compte propriétaire peut modifier. Les coachs consultent avec leur code d’accès.</div>
 
   <main id="app" class="app-main">
     <section id="view-dashboard" class="view active"></section>
@@ -152,22 +154,47 @@
       <label>Mot de passe<input id="authPassword" type="password" autocomplete="current-password" minlength="8" /></label>
       <div class="stack">
         <button type="button" id="signInBtn" class="btn primary">Se connecter</button>
-        <button type="button" id="signUpBtn" class="btn secondary">Créer mon compte</button>
         <button type="button" id="signOutBtn" class="btn danger" hidden>Se déconnecter</button>
       </div>
-      <p class="muted" style="margin-top:12px">Les modifications sont autorisées uniquement connecté et en ligne. Hors connexion, l’application reste consultable.</p>
+      <p class="muted" style="margin-top:12px">Compte propriétaire unique. Les modifications sont autorisées uniquement connecté et en ligne.</p>
+    </form>
+  </dialog>
+
+  <dialog id="coachDialog" class="modal">
+    <form method="dialog">
+      <div class="modal-head"><h2>Accès coach</h2><button value="cancel" class="icon-btn">×</button></div>
+      <p class="muted">Entre le code communiqué par le responsable. L’accès est uniquement en lecture seule.</p>
+      <label>Code coach<input id="coachAccessCode" type="password" inputmode="numeric" autocomplete="off" placeholder="••••••" /></label>
+      <div class="stack">
+        <button type="button" id="coachAccessBtn" class="btn primary">Consulter l’équipe</button>
+        <button type="button" id="coachRefreshBtn" class="btn secondary">Actualiser les données</button>
+        <button type="button" id="coachForgetBtn" class="btn danger">Oublier l’accès sur cet appareil</button>
+      </div>
+      <p class="muted" style="margin-top:12px">Après une première validation, la dernière copie reste disponible hors connexion sur cet appareil.</p>
     </form>
   </dialog>
 
   <dialog id="backupDialog" class="modal">
     <form method="dialog">
-      <div class="modal-head"><h2>Sauvegarde</h2><button value="cancel" class="icon-btn">×</button></div>
-      <p class="muted">Les données sont enregistrées sur cet appareil. Exporte régulièrement une sauvegarde.</p>
-      <div class="stack">
-        <button type="button" id="exportBtn" class="btn primary">Exporter une sauvegarde JSON</button>
-        <label class="btn secondary file-btn">Importer une sauvegarde<input id="importFile" type="file" accept="application/json" hidden /></label>
-        <button type="button" id="resetBtn" class="btn danger">Réinitialiser l’application</button>
+      <div class="modal-head"><h2>Sauvegardes · V1.28</h2><button value="cancel" class="icon-btn">×</button></div>
+      <div id="backupStatus" class="backup-status">État local uniquement</div>
+      <div class="stack" style="margin-top:10px">
+        <button type="button" id="saveCloudNowBtn" class="btn primary">Sauvegarder maintenant</button>
+        <button type="button" id="reloadCloudBtn" class="btn secondary">Recharger la dernière version cloud</button>
+        <button type="button" id="exportBtn" class="btn secondary">Exporter une sauvegarde JSON</button>
+        <label class="btn secondary file-btn">Importer une sauvegarde JSON<input id="importFile" type="file" accept="application/json" hidden /></label>
       </div>
+      <div id="ownerCoachSettings" class="coach-box" style="margin-top:14px" hidden>
+        <h3>Code d’accès des coachs</h3>
+        <p class="muted">4 à 10 chiffres. Changer ce code bloque les prochains chargements en ligne avec l’ancien code.</p>
+        <label>Nouveau code<input id="newCoachCode" type="password" inputmode="numeric" autocomplete="new-password" placeholder="4 à 10 chiffres" /></label>
+        <button type="button" id="saveCoachCodeBtn" class="btn secondary">Enregistrer le code coach</button>
+      </div>
+      <div class="divider"></div>
+      <div class="section-head"><h3>Historique cloud</h3><button type="button" id="refreshHistoryBtn" class="btn secondary small">Actualiser</button></div>
+      <div id="historyList" class="history-list"><div class="empty">Connecte-toi comme propriétaire pour afficher l’historique.</div></div>
+      <div class="divider"></div>
+      <button type="button" id="resetBtn" class="btn danger">Réinitialiser l’application</button>
     </form>
   </dialog>
 
@@ -175,8 +202,8 @@
   <script>
 (() => {
   const APP_KEY = 'spm_u18_r2_v1';
-  const VERSION = 27;
-  const roster = ["Jules T.","Léo","Arthur","Paco","Tom","Younès","Guillaume","Mattéo","Alex","Mathis","Eliot","Gabin","Jules","Johan"];
+  const VERSION = 28;
+  const roster = [];
   const schedule = [
     ['2026-09-05','J1','Championnat'],['2026-09-12','J2','Championnat'],['2026-09-19','Coupe','Gambardella'],['2026-09-26','J3','Championnat'],
     ['2026-10-10','J4','Championnat'],['2026-10-24','J5','Championnat'],['2026-11-07','J6','Championnat'],['2026-11-14','J7','Championnat'],
@@ -201,7 +228,10 @@
   const SUPABASE_URL='https://xwbxsggggpwstqyergee.supabase.co';
   const SUPABASE_KEY='sb_publishable_iEMcWCDYoLckYFPIczvEbw_GYFnIT1x';
   const CLOUD_MARKER_KEY='spm_u18_r2_cloud_updated_at';
+  const CLOUD_REV_KEY='spm_u18_r2_cloud_revision';
+  const COACH_CODE_KEY='spm_u18_r2_coach_code';
   let cloud=null, currentSession=null, syncTimer=null, syncing=false, lastCloudPayload='', ownerVerified=false;
+  let syncLabel='Local', syncKind='', lastCloudAt=localStorage.getItem(CLOUD_MARKER_KEY)||'', localRevision=Number(localStorage.getItem(CLOUD_REV_KEY)||0);
   function canEdit(){ return !!(navigator.onLine && currentSession?.user?.id && ownerVerified); }
 
 
@@ -722,7 +752,9 @@
     }).join('')||'<div class="muted">Aucun remplaçant</div>';
     const title=`${esc(m.label)}${m.opponent?' · '+esc(m.opponent):''}`;
     const html=`<!doctype html><html lang="fr"><head><meta charset="utf-8"><title>${title}</title><style>@page{size:A4 landscape;margin:10mm}*{box-sizing:border-box}body{font-family:Arial,sans-serif;color:#13271d;margin:0}.head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:8px}.head h1{font-size:22px;margin:0}.head p{margin:3px 0 0;color:#56665e;font-size:12px}.formation{font-weight:800}.grid{display:grid;grid-template-columns:2.2fr .8fr;gap:12px}.pitch{position:relative;height:150mm;background:#2f7d4f;border:2px solid #d9efe1;border-radius:8px;overflow:hidden}.pitch:before{content:'';position:absolute;left:50%;top:0;bottom:0;border-left:1px solid rgba(255,255,255,.8)}.pitch:after{content:'';position:absolute;left:50%;top:50%;width:70px;height:70px;border:1px solid rgba(255,255,255,.8);border-radius:50%;transform:translate(-50%,-50%)}.box{position:absolute;top:22%;height:56%;width:54px;border:1px solid rgba(255,255,255,.8)}.box.l{left:0;border-left:0}.box.r{right:0;border-right:0}.goal{position:absolute;top:38%;height:24%;width:10px;border:1px solid rgba(255,255,255,.9)}.goal.l{left:0;border-left:0}.goal.r{right:0;border-right:0}.pp{position:absolute;transform:translate(-50%,-50%);width:86px;text-align:center}.marks{height:10px;display:flex;justify-content:center;gap:2px;align-items:center}.y{display:inline-block;width:5px;height:7px;background:#f1c40f;border:1px solid rgba(0,0,0,.15);border-radius:1px}.c{display:inline-flex;width:12px;height:12px;border-radius:50%;align-items:center;justify-content:center;background:#fff;color:#0b5f3b;font-size:7px}.tag{display:grid;grid-template-columns:22px 1fr;background:#fff;border-radius:6px;overflow:hidden;border:1px solid #fff}.tag span{background:#183428;color:#fff;font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center}.tag strong{font-size:8px;padding:5px 3px;line-height:1.1}.side{display:flex;flex-direction:column;gap:8px}.card{border:1px solid #dfe7e2;border-radius:8px;padding:8px}.card h2{font-size:12px;margin:0 0 6px}.sub{display:grid;grid-template-columns:26px 1fr auto auto;gap:5px;align-items:center;padding:4px 0;border-bottom:1px solid #edf1ee;font-size:10px}.sub:last-child{border-bottom:0}.n{background:#183428;color:#fff;border-radius:4px;text-align:center;padding:3px}.ys{display:flex;gap:1px}.roles div{font-size:10px;margin:4px 0}.role-chip{display:inline-block;padding:1px 4px;border-radius:999px;background:#e7f2fb;color:#1e5d8e;font-size:7px;font-weight:800}.muted{color:#6b7972;font-size:10px}@media print{button{display:none}}
-.header-actions{display:flex;gap:8px;align-items:center}.sync-badge{font-size:10px;font-weight:800;padding:4px 7px;border-radius:999px;background:#eef3f0;color:#466157}.sync-badge.ok{background:#e1f4e9;color:#17603c}.sync-badge.warn{background:#fff4d6;color:#a76300}.readonly-banner{position:sticky;top:68px;z-index:9;margin:0 auto 8px;max-width:880px;padding:8px 14px;border-radius:12px;background:#fff4d6;color:#754c00;font-size:12px;font-weight:800;display:none}.readonly-mode .readonly-banner{display:block}.auth-status{font-size:12px;color:var(--muted);margin:-4px 0 10px}.cloud-ok{color:var(--green);font-weight:800}.cloud-warn{color:var(--amber);font-weight:800}@media(max-width:640px){.header-actions .btn{padding:8px 9px;font-size:11px}.app-header h1{font-size:22px}}
+.header-actions{display:flex;gap:8px;align-items:center}.sync-badge{font-size:10px;font-weight:800;padding:4px 7px;border-radius:999px;background:#eef3f0;color:#466157}.sync-badge.ok{background:#e1f4e9;color:#17603c}.sync-badge.warn{background:#fff4d6;color:#a76300}.readonly-banner{position:sticky;top:68px;z-index:9;margin:0 auto 8px;max-width:880px;padding:8px 14px;border-radius:12px;background:#fff4d6;color:#754c00;font-size:12px;font-weight:800;display:none}.readonly-mode .readonly-banner{display:block}.auth-status{font-size:12px;color:var(--muted);margin:-4px 0 10px}.cloud-ok{color:var(--green);font-weight:800}.cloud-warn{color:var(--amber);font-weight:800}
+.sync-badge{display:inline-flex;align-items:center;gap:4px;white-space:nowrap}.sync-badge.syncing{background:#eef3f0;color:#466157}.sync-badge.error{background:#fde8e8;color:#8b2525}.history-list{display:flex;flex-direction:column;gap:8px;max-height:260px;overflow:auto}.history-item{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 10px;border:1px solid var(--line);border-radius:11px;background:#f8faf9}.history-main{min-width:0}.history-main strong{display:block;font-size:12px}.history-main small{display:block;color:var(--muted);font-size:10px}.divider{height:1px;background:var(--line);margin:14px 0}.coach-box{padding:12px;border:1px solid var(--line);border-radius:14px;background:#f8faf9}.coach-box h3{font-size:13px;margin:0 0 6px}.backup-status{font-size:11px;padding:8px 10px;border-radius:10px;background:#eef3f0;color:#466157}.backup-status.ok{background:#e1f4e9;color:#17603c}.backup-status.warn{background:#fff4d6;color:#754c00}.backup-status.error{background:#fde8e8;color:#8b2525}@media(max-width:640px){.header-actions{gap:5px}.sync-badge{display:none}}
+@media(max-width:640px){.header-actions .btn{padding:8px 9px;font-size:11px}.app-header h1{font-size:22px}}
 </style></head><body><div class="head"><div><h1>Saint-Palais-sur-Mer U18 R2</h1><p>${title} · ${fmt(m.date)} · ${esc(m.venue)}</p></div><div class="formation">Formation ${esc(lu.formation)}</div></div><div class="grid"><div class="pitch"><div class="box l"></div><div class="box r"></div><div class="goal l"></div><div class="goal r"></div>${field}</div><div class="side"><div class="card"><h2>Remplaçants</h2>${subs}</div><div class="card roles"><h2>Responsabilités</h2><div><b>Capitaine :</b> ${roleName(lu.roles?.captainId)}</div><div><b>Penalty :</b> ${roleName(lu.roles?.penaltyId)}</div><div><b>Coups francs :</b> ${roleName(lu.roles?.freeKickId)}</div><div><b>Corners :</b> ${roleName(lu.roles?.cornerId)}</div></div></div></div><script>setTimeout(()=>window.print(),250)<\/script></body></html>`;
     const w=window.open('','_blank','width=1200,height=800');
     if(!w){toast('Fenêtre d’impression bloquée');return;}
@@ -867,14 +899,34 @@
 
   function persistQuiet(){ localStorage.setItem(APP_KEY,JSON.stringify(state)); scheduleCloudSave(); }
 
+  function setSyncStatus(label,kind=''){
+    syncLabel=label; syncKind=kind; updateAccessUI();
+  }
+  function fmtDateTime(iso){
+    if(!iso)return '—';
+    try{return new Intl.DateTimeFormat('fr-FR',{dateStyle:'short',timeStyle:'short'}).format(new Date(iso));}catch{return iso;}
+  }
   function updateAccessUI(){
     const editable=canEdit();
     document.body.classList.toggle('readonly-mode',!editable);
     const btn=document.getElementById('authBtn');
     if(btn) btn.textContent=currentSession?.user?.email ? (ownerVerified?(navigator.onLine?'✓ Propriétaire':'Hors ligne'):'Vérification…') : 'Connexion';
+    const coachBtn=document.getElementById('coachBtn');
+    if(coachBtn) coachBtn.hidden=!!(currentSession&&ownerVerified);
+    const badge=document.getElementById('syncBadge');
+    if(badge){badge.textContent=syncLabel;badge.className='sync-badge '+(syncKind||'');}
     const cur=document.getElementById('authCurrent');
     if(cur) cur.innerHTML=currentSession?.user?.email ? `<span class="${ownerVerified&&navigator.onLine?'cloud-ok':'cloud-warn'}">${ownerVerified?(navigator.onLine?'Compte propriétaire · synchronisation active':'Compte propriétaire · lecture seule hors ligne'):'Compte non autorisé ou en cours de vérification'}</span><br>${esc(currentSession.user.email)}` : 'Non connecté';
     const so=document.getElementById('signOutBtn'); if(so) so.hidden=!currentSession;
+    const oc=document.getElementById('ownerCoachSettings'); if(oc) oc.hidden=!ownerVerified;
+    const bs=document.getElementById('backupStatus');
+    if(bs){
+      let cls=''; let txt='État local uniquement';
+      if(ownerVerified&&navigator.onLine){cls=syncKind==='error'?'error':syncKind==='warn'?'warn':'ok';txt=`${syncLabel}${lastCloudAt?' · '+fmtDateTime(lastCloudAt):''}${localRevision?' · rév. '+localRevision:''}`;}
+      else if(localStorage.getItem(COACH_CODE_KEY)){cls='ok';txt=`Lecture coach · copie locale${lastCloudAt?' · '+fmtDateTime(lastCloudAt):''}`;}
+      else if(!navigator.onLine){cls='warn';txt='Hors connexion · dernière copie locale';}
+      bs.className='backup-status '+cls;bs.textContent=txt;
+    }
   }
 
   async function ensureOwner(){
@@ -885,37 +937,35 @@
       const {data,error}=await cloud.from('app_owner').select('user_id').eq('user_id',uid).maybeSingle();
       if(error) throw error;
       if(data?.user_id===uid){ownerVerified=true;updateAccessUI();return true;}
-      const {error:claimError}=await cloud.from('app_owner').insert({singleton_id:1,user_id:uid});
-      if(!claimError){ownerVerified=true;updateAccessUI();toast('Compte propriétaire activé');return true;}
-      if(claimError.code==='23505'){
-        await cloud.auth.signOut(); currentSession=null; ownerVerified=false; updateAccessUI();
-        toast('Accès refusé : un compte propriétaire existe déjà');
-        return false;
-      }
-      throw claimError;
+      await cloud.auth.signOut(); currentSession=null; ownerVerified=false; updateAccessUI();
+      toast('Accès refusé : ce compte n’est pas le propriétaire');
+      return false;
     }catch(e){console.error(e);ownerVerified=false;updateAccessUI();toast('Vérification du compte impossible');return false;}
   }
 
-  async function loadPublicState(silent=false){
-    if(!cloud||!navigator.onLine)return false;
+  async function coachFetch(code,silent=false){
+    if(!navigator.onLine){if(!silent)toast('Hors connexion : dernière copie locale');return false;}
+    code=String(code||'').trim();
+    if(!/^\d{4,10}$/.test(code)){if(!silent)toast('Entre le code coach de 4 à 10 chiffres');return false;}
     try{
-      const {data,error}=await cloud.from('public_team_state').select('state,updated_at').eq('singleton_id',1).maybeSingle();
-      if(error) throw error;
-      if(data?.state){
-        state=data.state; state.version=VERSION;
-        localStorage.setItem(APP_KEY,JSON.stringify(state));
-        localStorage.setItem(CLOUD_MARKER_KEY,data.updated_at||'');
-        lastCloudPayload='';
-        render(); updateAccessUI();
-        if(!silent)toast('Données de l’équipe actualisées');
-        return true;
-      }
-    }catch(e){console.warn('Lecture publique indisponible',e);}
-    return false;
+      setSyncStatus('Actualisation…','syncing');
+      const res=await fetch(`${SUPABASE_URL}/functions/v1/coach-read`,{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY},body:JSON.stringify({code})});
+      const data=await res.json().catch(()=>({}));
+      if(!res.ok)throw new Error(data.error||'Code incorrect');
+      if(!data?.state)throw new Error('Aucune donnée disponible');
+      state=data.state; state.version=VERSION;
+      localStorage.setItem(APP_KEY,JSON.stringify(state));
+      localStorage.setItem(COACH_CODE_KEY,code);
+      lastCloudAt=data.updated_at||''; localRevision=Number(data.revision||0);
+      localStorage.setItem(CLOUD_MARKER_KEY,lastCloudAt);localStorage.setItem(CLOUD_REV_KEY,String(localRevision));
+      lastCloudPayload=''; render(); setSyncStatus('Lecture coach','ok');
+      if(!silent)toast('Accès coach validé · données actualisées');
+      return true;
+    }catch(e){console.warn(e);setSyncStatus('Lecture seule','warn');if(!silent)toast(e.message||'Accès coach impossible');return false;}
   }
 
   async function initCloud(){
-    if(!navigator.onLine){updateAccessUI();return;}
+    if(!navigator.onLine){setSyncStatus('Hors ligne','warn');return;}
     try{
       const mod=await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm');
       cloud=mod.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
@@ -924,32 +974,35 @@
       updateAccessUI();
       cloud.auth.onAuthStateChange((event,session)=>{
         currentSession=session||null; ownerVerified=false; updateAccessUI();
-        if(session&&navigator.onLine){
-          setTimeout(async()=>{if(await ensureOwner()) await syncOnLogin(); else await loadPublicState(true);},0);
-        }else if(!session&&navigator.onLine){
-          setTimeout(()=>loadPublicState(true),0);
-        }
+        if(session&&navigator.onLine){setTimeout(async()=>{if(await ensureOwner()) await syncOnLogin();},0);}
       });
       if(currentSession&&ownerVerified) await syncOnLogin();
-      else await loadPublicState(true);
-    }catch(e){console.warn('Cloud indisponible',e);ownerVerified=false;updateAccessUI();}
+      else{
+        const code=localStorage.getItem(COACH_CODE_KEY)||'';
+        if(code) await coachFetch(code,true); else setSyncStatus('Lecture seule','warn');
+      }
+    }catch(e){console.warn('Cloud indisponible',e);ownerVerified=false;setSyncStatus('Hors ligne','warn');}
   }
 
-  async function syncOnLogin(){
-    if(!cloud||!canEdit()||syncing)return; syncing=true;
+  async function syncOnLogin(forceReload=false){
+    if(!cloud||!canEdit()||syncing)return; syncing=true;setSyncStatus('Synchronisation…','syncing');
     try{
       const uid=currentSession.user.id;
-      const {data,error}=await cloud.from('team_state').select('state,updated_at').eq('user_id',uid).maybeSingle();
+      const {data,error}=await cloud.from('team_state').select('state,updated_at,revision').eq('user_id',uid).maybeSingle();
       if(error) throw error;
       if(data?.state){
-        const marker=localStorage.getItem(CLOUD_MARKER_KEY);
-        if(!marker || data.updated_at>marker){
-          state=data.state; state.version=VERSION; localStorage.setItem(APP_KEY,JSON.stringify(state)); localStorage.setItem(CLOUD_MARKER_KEY,data.updated_at); lastCloudPayload=JSON.stringify(state); render(); toast('Données cloud restaurées');
+        const serverRev=Number(data.revision||1);
+        if(forceReload || !localRevision || serverRev>=localRevision){
+          state=data.state; state.version=VERSION; localStorage.setItem(APP_KEY,JSON.stringify(state));
+          lastCloudAt=data.updated_at||'';localRevision=serverRev;
+          localStorage.setItem(CLOUD_MARKER_KEY,lastCloudAt);localStorage.setItem(CLOUD_REV_KEY,String(localRevision));
+          lastCloudPayload=JSON.stringify(state); render();
         }
+        setSyncStatus('✓ Sauvegardé','ok');
       }else{
-        await pushCloud(true); toast('Première sauvegarde cloud créée');
+        localRevision=0; await pushCloud(true); toast('Première sauvegarde cloud créée');
       }
-    }catch(e){console.error(e);toast('Synchronisation cloud impossible');}
+    }catch(e){console.error(e);setSyncStatus('Erreur cloud','error');toast('Synchronisation cloud impossible');}
     finally{syncing=false;updateAccessUI();}
   }
 
@@ -959,18 +1012,68 @@
   }
 
   async function pushCloud(force=false){
-    if(!cloud||!canEdit()||syncing)return;
-    const payload=JSON.stringify(state); if(!force&&payload===lastCloudPayload)return;
-    syncing=true;
+    if(!cloud||!canEdit()||syncing)return false;
+    const payload=JSON.stringify(state); if(!force&&payload===lastCloudPayload)return true;
+    syncing=true;setSyncStatus('Synchronisation…','syncing');
     try{
       const uid=currentSession.user.id, snapshot=JSON.parse(payload);
-      const {data,error}=await cloud.from('team_state').upsert({user_id:uid,state:snapshot,app_version:VERSION,updated_at:new Date().toISOString()},{onConflict:'user_id'}).select('updated_at').single();
-      if(error) throw error;
-      const h=await cloud.from('team_state_history').insert({user_id:uid,state:snapshot,app_version:VERSION}); if(h.error) throw h.error;
-      const pub=await cloud.from('public_team_state').upsert({singleton_id:1,state:snapshot,app_version:VERSION,updated_at:data.updated_at},{onConflict:'singleton_id'}); if(pub.error) throw pub.error;
-      lastCloudPayload=payload; localStorage.setItem(CLOUD_MARKER_KEY,data.updated_at);
-    }catch(e){console.error(e);toast('Sauvegarde cloud non effectuée');}
+      const {data:current,error:readErr}=await cloud.from('team_state').select('revision,updated_at').eq('user_id',uid).maybeSingle();
+      if(readErr)throw readErr;
+      const serverRev=Number(current?.revision||0);
+      if(current && localRevision && serverRev!==localRevision){
+        setSyncStatus('Conflit détecté','error');
+        toast('Une version plus récente existe dans le cloud. Recharge-la avant de continuer.');
+        return false;
+      }
+      const nextRev=serverRev+1, now=new Date().toISOString();
+      let q;
+      if(current){
+        q=await cloud.from('team_state').update({state:snapshot,app_version:VERSION,revision:nextRev,updated_at:now}).eq('user_id',uid).eq('revision',serverRev).select('updated_at,revision').maybeSingle();
+        if(q.error)throw q.error;
+        if(!q.data)throw new Error('Conflit de version');
+      }else{
+        q=await cloud.from('team_state').insert({user_id:uid,state:snapshot,app_version:VERSION,revision:1,updated_at:now}).select('updated_at,revision').single();
+        if(q.error)throw q.error;
+      }
+      lastCloudPayload=payload;lastCloudAt=q.data.updated_at;localRevision=Number(q.data.revision||nextRev);
+      localStorage.setItem(CLOUD_MARKER_KEY,lastCloudAt);localStorage.setItem(CLOUD_REV_KEY,String(localRevision));
+      setSyncStatus('✓ Sauvegardé','ok');
+      return true;
+    }catch(e){console.error(e);setSyncStatus('Erreur sauvegarde','error');toast('Sauvegarde cloud non effectuée');return false;}
     finally{syncing=false;updateAccessUI();}
+  }
+
+  async function setCoachCode(){
+    if(!canEdit()){toast('Connexion propriétaire requise');return;}
+    const code=document.getElementById('newCoachCode').value.trim();
+    if(!/^\d{4,10}$/.test(code)){toast('Choisis un code de 4 à 10 chiffres');return;}
+    try{
+      const token=currentSession.access_token;
+      const res=await fetch(`${SUPABASE_URL}/functions/v1/owner-set-coach-code`,{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${token}`},body:JSON.stringify({code})});
+      const data=await res.json().catch(()=>({}));if(!res.ok)throw new Error(data.error||'Impossible d’enregistrer le code');
+      document.getElementById('newCoachCode').value='';toast('Code coach enregistré');
+    }catch(e){console.error(e);toast(e.message||'Code coach non enregistré');}
+  }
+
+  async function loadHistory(){
+    const box=document.getElementById('historyList'); if(!box)return;
+    if(!canEdit()){box.innerHTML='<div class="empty">Connecte-toi comme propriétaire pour afficher l’historique.</div>';return;}
+    box.innerHTML='<div class="empty">Chargement…</div>';
+    const {data,error}=await cloud.from('team_state_history').select('id,revision,created_at,app_version').eq('user_id',currentSession.user.id).order('created_at',{ascending:false}).limit(30);
+    if(error){box.innerHTML='<div class="empty">Historique indisponible.</div>';return;}
+    box.innerHTML=(data||[]).map(x=>`<div class="history-item"><div class="history-main"><strong>Révision ${x.revision||'—'} · V${x.app_version||VERSION}</strong><small>${fmtDateTime(x.created_at)}</small></div><button type="button" class="btn secondary small" data-restore-history="${x.id}">Restaurer</button></div>`).join('')||'<div class="empty">Aucune sauvegarde cloud.</div>';
+    box.querySelectorAll('[data-restore-history]').forEach(b=>b.onclick=()=>restoreHistory(b.dataset.restoreHistory));
+  }
+
+  async function restoreHistory(id){
+    if(!canEdit())return;
+    if(!confirm('Restaurer cette sauvegarde ? La version actuelle restera dans l’historique.'))return;
+    try{
+      const {data,error}=await cloud.from('team_state_history').select('state').eq('id',id).eq('user_id',currentSession.user.id).single();if(error)throw error;
+      const cur=await cloud.from('team_state').select('revision').eq('user_id',currentSession.user.id).single();if(cur.error)throw cur.error;
+      state=data.state;state.version=VERSION;localRevision=Number(cur.data.revision||0);lastCloudPayload='';localStorage.setItem(APP_KEY,JSON.stringify(state));
+      const ok=await pushCloud(true);if(ok){render();toast('Sauvegarde restaurée');await loadHistory();}
+    }catch(e){console.error(e);toast('Restauration impossible');}
   }
 
   async function signIn(){
@@ -986,33 +1089,19 @@
       toast('Connecté');
     }
   }
-  async function signUp(){
-    if(!navigator.onLine){toast('Connexion Internet requise');return;} if(!cloud)await initCloud(); if(!cloud)return;
-    const email=document.getElementById('authEmail').value.trim(),password=document.getElementById('authPassword').value;
-    if(!email||password.length<8){toast('Email valide et mot de passe de 8 caractères minimum');return;}
-    const {data,error}=await cloud.auth.signUp({email,password,options:{emailRedirectTo:location.origin+location.pathname}});
-    if(error){toast(error.message);return;}
-    if(data.session){
-      currentSession=data.session;
-      if(await ensureOwner()){
-        document.getElementById('authDialog').close();
-        await syncOnLogin();
-        toast('Compte propriétaire créé');
-      }
-    }else toast('Compte créé : vérifie ton email puis connecte-toi. Le premier compte validé deviendra l’unique propriétaire.');
-  }
   async function signOut(){
     if(cloud){
       await cloud.auth.signOut(); currentSession=null; ownerVerified=false; updateAccessUI();
       document.getElementById('authDialog').close();
-      if(navigator.onLine) await loadPublicState(true);
+      const code=localStorage.getItem(COACH_CODE_KEY)||'';
+      if(navigator.onLine&&code) await coachFetch(code,true); else setSyncStatus('Lecture seule','warn');
       toast('Déconnecté · lecture seule');
     }
   }
 
   function readonlyAllowed(el){
     if(!el)return true;
-    if(el.closest('#authDialog')||el.id==='authBtn'||el.id==='backupBtn'||el.id==='exportBtn')return true;
+    if(el.closest('#authDialog')||el.closest('#coachDialog')||el.id==='authBtn'||el.id==='coachBtn'||el.id==='backupBtn'||el.id==='exportBtn'||el.id==='coachAccessBtn'||el.id==='coachRefreshBtn'||el.id==='coachForgetBtn')return true;
     if(el.closest('.bottom-nav'))return true;
     if(el.matches('[data-stats-mode],#statsMatchSelect,#callupMatchSelect,#refDate,.player-name-btn'))return true;
     const id=(el.id||'').toLowerCase(),txt=(el.textContent||'').trim().toLowerCase();
@@ -1088,7 +1177,7 @@
 
 
   document.querySelectorAll('.bottom-nav button').forEach(b=>b.onclick=()=>view(b.dataset.view));
-  document.getElementById('backupBtn').onclick=()=>document.getElementById('backupDialog').showModal();
+  document.getElementById('backupBtn').onclick=()=>{updateAccessUI();document.getElementById('backupDialog').showModal();loadHistory();};
   document.getElementById('saveCloseMatchBtn').onclick=()=>saveCloseMatch();
   document.getElementById('savePlayerBtn').onclick=e=>{e.preventDefault();const id=document.getElementById('playerId').value,name=document.getElementById('playerName').value.trim();if(!name)return;const data={name,position:document.getElementById('playerPosition').value,number:Number(document.getElementById('playerNumber').value)||null};if(id)Object.assign(player(id),data);else state.players.push({id:'p'+Date.now(),...data,active:true});document.getElementById('playerDialog').close();save();toast('Effectif mis à jour');};
   document.getElementById('saveMatchBtn').onclick=e=>{e.preventDefault();const id=document.getElementById('matchId').value,date=document.getElementById('matchDate').value,label=document.getElementById('matchLabel').value.trim();if(!date||!label)return;const gf=document.getElementById('matchGoalsFor').value,ga=document.getElementById('matchGoalsAgainst').value;const data={date,label,competition:document.getElementById('matchCompetition').value.trim(),opponent:document.getElementById('matchOpponent').value.trim(),venue:document.getElementById('matchVenue').value,status:document.getElementById('matchStatus').value,goalsFor:gf===''?null:Number(gf),goalsAgainst:ga===''?null:Number(ga)};if(id)Object.assign(match(id),data);else state.matches.push({id:'m'+Date.now(),...data});document.getElementById('matchDialog').close();save();toast('Match enregistré');};
@@ -1097,7 +1186,7 @@
   document.getElementById('saveDisciplineBtn').onclick=e=>{e.preventDefault();const type=document.getElementById('disciplineType').value,pid=document.getElementById('disciplinePlayer').value,mid=document.getElementById('disciplineMatch').value,date=document.getElementById('disciplineDate').value;if(!pid||!mid||!date){toast('Joueur, match et date du carton sont obligatoires');return;}if(type==='yellow'){const did=document.getElementById('disciplineDialog').dataset.yellowId;const duplicate=state.yellows.some(y=>y.playerId===pid&&y.matchId===mid&&y.id!==did);if(duplicate){toast('Un jaune est déjà enregistré pour ce joueur sur ce match');return;}const obj={playerId:pid,matchId:mid,date};if(did)Object.assign(state.yellows.find(y=>y.id===did),obj);else state.yellows.push({id:'y'+Date.now(),...obj});}else{const decision=document.getElementById('redDecision').value,sanction=document.getElementById('redSanction').value;if(decision==='decided'&&!sanction){toast('Indique le nombre total de matchs');return;}const obj={playerId:pid,matchId:mid,date,decision,sanctionTotal:sanction?Number(sanction):null,firstPurgeMatchId:document.getElementById('redFirstPurge').value||'',notes:document.getElementById('redNotes').value.trim(),closed:document.getElementById('redClosed').checked};const did=document.getElementById('disciplineDialog').dataset.redId;if(did)Object.assign(state.reds.find(r=>r.id===did),obj);else state.reds.push({id:'r'+Date.now(),...obj});}document.getElementById('disciplineDialog').close();save();toast(type==='yellow'?'Carton jaune enregistré':'Carton rouge enregistré');};
   document.getElementById('exportBtn').onclick=()=>{const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`saint-palais-u18-r2-backup-${todayISO()}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);toast('Sauvegarde exportée');};
   document.getElementById('importFile').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const x=JSON.parse(r.result);if(!x.players||!x.matches)throw new Error();state=x;state.version=VERSION;state.players=(state.players||[]).map(p=>({...p,active:p.active!==false}));state.matches=(state.matches||[]).map(m=>({...m,status:m.status||((m.goalsFor!==null&&m.goalsFor!==undefined&&m.goalsAgainst!==null&&m.goalsAgainst!==undefined)?'Terminé':'À venir')}));state.yellows=state.yellows||[];state.reds=(state.reds||[]).map(r=>({...r,closed:!!r.closed,firstPurgeMatchId:r.firstPurgeMatchId||''}));state.callups=state.callups||{};Object.values(state.callups).forEach(byP=>Object.values(byP||{}).forEach(c=>{if(c?.status==='Convoqué') c.status='Remplaçant';}));state.stats=state.stats||{};state.lineups=state.lineups||{};state.settings={yellowWindowMonths:3,yellowThreshold:3,...(state.settings||{})};save();document.getElementById('backupDialog').close();toast('Sauvegarde restaurée');}catch{toast('Fichier de sauvegarde invalide');}};r.readAsText(f);};
-  document.getElementById('resetBtn').onclick=()=>{if(confirm('Réinitialiser toutes les données de l’application ?')){state=freshState();save();document.getElementById('backupDialog').close();toast('Application réinitialisée');}};
+  document.getElementById('resetBtn').onclick=()=>{if(confirm('Réinitialiser toutes les données de l’application ?')){state=freshState();localRevision=0;lastCloudPayload='';localStorage.removeItem(CLOUD_REV_KEY);localStorage.removeItem(CLOUD_MARKER_KEY);save();document.getElementById('backupDialog').close();toast('Application réinitialisée');}};
 
   function copyCallup(matchId){ const m=match(matchId),cu=state.callups[matchId]||{};const groups={Titulaire:[],Remplaçant:[]};activePlayers().forEach(p=>{if(suspensionForPlayerAtMatch(p.id,matchId))return;const st=cu[p.id]?.status;if(groups[st])groups[st].push(p.name);});let text=`SAINT-PALAIS U18 R2\n${m.label} — ${fmt(m.date)}${m.opponent?' — '+m.opponent:''}\n\n`;if(groups.Titulaire.length)text+=`Titulaires : ${groups.Titulaire.join(', ')}\n`;if(groups.Remplaçant.length)text+=`Remplaçants : ${groups.Remplaçant.join(', ')}\n`;if(navigator.clipboard?.writeText)navigator.clipboard.writeText(text).then(()=>toast('Convocation copiée'));else{const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();toast('Convocation copiée');} }
 
@@ -1116,9 +1205,16 @@
   };
 
   document.getElementById('authBtn').onclick=()=>{updateAccessUI();document.getElementById('authDialog').showModal();};
+  document.getElementById('coachBtn').onclick=()=>{document.getElementById('coachAccessCode').value=localStorage.getItem(COACH_CODE_KEY)||'';document.getElementById('coachDialog').showModal();};
   document.getElementById('signInBtn').onclick=signIn;
-  document.getElementById('signUpBtn').onclick=signUp;
   document.getElementById('signOutBtn').onclick=signOut;
+  document.getElementById('coachAccessBtn').onclick=async()=>{const ok=await coachFetch(document.getElementById('coachAccessCode').value,false);if(ok)document.getElementById('coachDialog').close();};
+  document.getElementById('coachRefreshBtn').onclick=()=>coachFetch(document.getElementById('coachAccessCode').value||localStorage.getItem(COACH_CODE_KEY)||'',false);
+  document.getElementById('coachForgetBtn').onclick=()=>{localStorage.removeItem(COACH_CODE_KEY);document.getElementById('coachAccessCode').value='';toast('Code coach oublié sur cet appareil');};
+  document.getElementById('saveCoachCodeBtn').onclick=setCoachCode;
+  document.getElementById('saveCloudNowBtn').onclick=()=>pushCloud(true);
+  document.getElementById('reloadCloudBtn').onclick=()=>syncOnLogin(true);
+  document.getElementById('refreshHistoryBtn').onclick=loadHistory;
   render(); updateAccessUI(); initCloud();
 })();
 
