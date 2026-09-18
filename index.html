@@ -519,8 +519,13 @@
     el.querySelector('#quickPlayerName').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();el.querySelector('#quickAddPlayer').click();}};
   }
 
+  function hasSavedLineup(matchId){
+    const lu=state.lineups?.[matchId];
+    return !!(lu && Object.values(lu.slots||{}).some(x=>x?.playerId));
+  }
+
   function renderMatches(){ const el=document.getElementById('view-matches'); const ms=sortedMatches();
-    el.innerHTML=`<div class="section-head"><h2>Matchs</h2><button class="btn primary" id="addMatch">+ Match</button></div><div class="list">${ms.map(m=>{const status=m.status||((m.goalsFor!==null&&m.goalsAgainst!==null)?'Terminé':'À venir');const statusCls=status==='Terminé'?'green':status==='Déplacé'?'amber':'blue';const played=m.goalsFor!==null&&m.goalsAgainst!==null;return `<div class="list-row"><div class="list-main"><strong>${esc(m.label)} · ${fmt(m.date)}</strong><span class="muted">${esc(m.competition||'')} ${m.opponent?'· '+esc(m.opponent):'· adversaire à renseigner'} · ${esc(m.venue||'')}</span></div><div class="match-action-group">${played?`<span class="score">${displayedScore(m)}</span>`:''}<span class="pill ${statusCls}">${esc(status)}</span><button class="btn small ${status==='Terminé'?'secondary':'primary'}" onclick="window.App.closeMatch('${m.id}')">${status==='Terminé'?'Compte rendu':'Clôturer'}</button><button class="btn small secondary" onclick="window.App.editMatch('${m.id}')">Modifier</button></div></div>`}).join('')}</div>`;
+    el.innerHTML=`<div class="section-head"><h2>Matchs</h2><button class="btn primary" id="addMatch">+ Match</button></div><div class="list">${ms.map(m=>{const status=m.status||((m.goalsFor!==null&&m.goalsAgainst!==null)?'Terminé':'À venir');const statusCls=status==='Terminé'?'green':status==='Déplacé'?'amber':'blue';const played=m.goalsFor!==null&&m.goalsAgainst!==null;const hasCompo=hasSavedLineup(m.id);return `<div class="list-row"><div class="list-main"><strong>${esc(m.label)} · ${fmt(m.date)}</strong><span class="muted">${esc(m.competition||'')} ${m.opponent?'· '+esc(m.opponent):'· adversaire à renseigner'} · ${esc(m.venue||'')}</span></div><div class="match-action-group">${played?`<span class="score">${displayedScore(m)}</span>`:''}<span class="pill ${statusCls}">${esc(status)}</span>${hasCompo?`<button class="btn small secondary" onclick="window.App.goLineup('${m.id}')">Voir la compo</button>`:''}<button class="btn small ${status==='Terminé'?'secondary':'primary'}" onclick="window.App.closeMatch('${m.id}')">${status==='Terminé'?'Compte rendu':'Clôturer'}</button><button class="btn small secondary" onclick="window.App.editMatch('${m.id}')">Modifier</button></div></div>`}).join('')}</div>`;
     el.querySelector('#addMatch').onclick=()=>openMatch();
   }
 
@@ -1299,7 +1304,7 @@
     if(el.closest('.bottom-nav'))return true;
     if(el.matches('[data-stats-mode],#statsMatchSelect,#callupMatchSelect,#refDate,.player-name-btn'))return true;
     const id=(el.id||'').toLowerCase(),txt=(el.textContent||'').trim().toLowerCase();
-    if(id.includes('copy')||id.includes('print')||txt.startsWith('copier')||txt.startsWith('imprimer')||txt==='×'||el.value==='cancel')return true;
+    if(id.includes('copy')||id.includes('print')||id.includes('share')||txt.startsWith('copier')||txt.startsWith('imprimer')||txt.startsWith('partager')||txt.startsWith('voir la compo')||txt==='×'||el.value==='cancel')return true;
     return false;
   }
   ['click','change','input','submit'].forEach(type=>document.addEventListener(type,e=>{
@@ -1393,6 +1398,7 @@
     deleteYellow,
     editRed:(id)=>openDiscipline('red',id),
     goCallups:(id)=>{sessionStorage.setItem('callupMatch',id);view('callups');},
+    goLineup:(id)=>{sessionStorage.setItem('callupMatch',id);callupViewMode='pitch';sessionStorage.setItem('callupViewMode','pitch');view('callups');},
     goStats:(id)=>{sessionStorage.setItem('statsMatch',id);statsMode='entry';view('stats');},
     goDiscipline:()=>view('discipline'),
     playerProfile:openPlayerProfile
