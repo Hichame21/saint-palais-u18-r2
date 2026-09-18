@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0b5f3b" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="U18 R2" />
+  <title>Saint-Palais U18 R2</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <style>
+:root{--green:#0b5f3b;--green2:#148254;--ink:#15251e;--muted:#65756d;--bg:#f4f7f5;--card:#fff;--line:#dfe7e2;--amber:#a76300;--amberbg:#fff4d6;--red:#a22929;--redbg:#fde8e8;--blue:#1e5d8e;--bluebg:#e7f2fb;--radius:18px;--shadow:0 8px 26px rgba(18,55,38,.08)}
+*{box-sizing:border-box}html{background:var(--bg)}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);padding-bottom:92px}.app-header{position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;padding:max(12px,env(safe-area-inset-top)) 18px 12px;background:rgba(244,247,245,.94);backdrop-filter:blur(16px);border-bottom:1px solid rgba(223,231,226,.9)}.eyebrow{font-size:11px;font-weight:800;letter-spacing:.12em;color:var(--green)}h1{font-size:25px;margin:1px 0 0}h2{margin:0;font-size:20px}h3{margin:0 0 10px;font-size:16px}.app-main{max-width:880px;margin:0 auto;padding:16px}.view{display:none}.view.active{display:block}.bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:20;display:grid;grid-template-columns:repeat(6,1fr);padding:8px 6px max(8px,env(safe-area-inset-bottom));background:rgba(255,255,255,.96);backdrop-filter:blur(18px);border-top:1px solid var(--line)}.bottom-nav button{border:0;background:transparent;color:#6d7b74;display:flex;flex-direction:column;gap:2px;align-items:center;padding:4px 1px;font-size:19px}.bottom-nav button small{font-size:9px}.bottom-nav button.active{color:var(--green);font-weight:800}.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);margin-bottom:14px}.hero{background:linear-gradient(135deg,#0b5f3b,#147b50);color:white;border:0}.hero .muted{color:rgba(255,255,255,.78)}.hero-title{font-size:28px;font-weight:900;margin:4px 0}.hero-sub{font-size:14px}.grid-kpi{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}.kpi{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px;text-align:center}.kpi strong{display:block;font-size:26px}.kpi span{font-size:11px;color:var(--muted)}.section-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:4px 0 12px}.btn{border:0;border-radius:12px;padding:11px 14px;font-size:14px;font-weight:750;cursor:pointer}.btn.primary{background:var(--green);color:white}.btn.secondary{background:#edf2ef;color:var(--ink)}.btn.danger{background:var(--redbg);color:var(--red)}.btn.small{padding:7px 10px;font-size:12px}.icon-btn{width:38px;height:38px;border-radius:12px;border:1px solid var(--line);background:#fff;font-size:20px}.list{display:flex;flex-direction:column;gap:8px}.list-row{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid var(--line);border-radius:14px;padding:12px;background:#fff}.list-main{min-width:0}.list-main strong{display:block}.muted{color:var(--muted);font-size:13px}.pill{display:inline-flex;align-items:center;border-radius:999px;padding:5px 9px;font-size:11px;font-weight:800;background:#eef3f0;color:#466157}.pill.green{background:#e1f4e9;color:#17603c}.pill.amber{background:var(--amberbg);color:var(--amber)}.pill.red{background:var(--redbg);color:var(--red)}.pill.blue{background:var(--bluebg);color:var(--blue)}.alerts{display:flex;flex-direction:column;gap:8px}.alert{border-radius:14px;padding:12px 14px;font-size:13px}.alert.red{background:var(--redbg);color:#792020}.alert.amber{background:var(--amberbg);color:#754c00}.empty{padding:22px;text-align:center;color:var(--muted);border:1px dashed #cdd8d1;border-radius:14px;background:#fafcfb}.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}.toolbar select,.toolbar input{flex:1;min-width:130px}.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:14px;background:#fff}.table{width:100%;border-collapse:collapse;min-width:640px}.table th,.table td{padding:10px 11px;border-bottom:1px solid #edf1ee;text-align:left;font-size:13px}.table th{position:sticky;top:0;background:#f7faf8;color:#52635a;font-size:11px;text-transform:uppercase;letter-spacing:.03em}.table tr:last-child td{border-bottom:0}.table input[type=number]{width:70px}.table select{min-width:125px}.modal{border:0;border-radius:20px;padding:0;width:min(92vw,520px);box-shadow:0 24px 80px rgba(0,0,0,.22)}.modal::backdrop{background:rgba(5,18,12,.45);backdrop-filter:blur(3px)}.modal form{padding:18px}.modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}.modal label{display:flex;flex-direction:column;gap:6px;margin:11px 0;font-size:12px;font-weight:800;color:#405249}.modal input,.modal select,.modal textarea,.toolbar input,.toolbar select{width:100%;border:1px solid #ced9d2;border-radius:11px;padding:10px 11px;background:white;color:var(--ink);font:inherit}.actions{display:flex;gap:9px;justify-content:flex-end;margin-top:16px}.stack{display:flex;flex-direction:column;gap:10px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.discipline-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}.discipline-actions .yellow{background:#f7ce45;color:#3d3200}.discipline-actions .red{background:#bc3333;color:#fff}.progress{height:9px;background:#edf2ef;border-radius:999px;overflow:hidden}.progress>span{display:block;height:100%;background:var(--green)}.toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%) translateY(20px);opacity:0;pointer-events:none;background:#13271d;color:#fff;padding:10px 14px;border-radius:12px;font-size:13px;transition:.2s;z-index:40;max-width:88vw;text-align:center}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}.score{font-size:22px;font-weight:900}.callup-summary{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 12px}.danger-text{color:var(--red);font-weight:800}.ok-text{color:var(--green);font-weight:800}.file-btn{text-align:center}.segmented{display:flex;background:#eaf0ec;border-radius:12px;padding:3px;gap:3px}.segmented button{flex:1;border:0;border-radius:9px;padding:8px;background:transparent;color:#5c6d64}.segmented button.active{background:#fff;color:var(--green);box-shadow:0 1px 5px rgba(0,0,0,.08);font-weight:800}.quick-add{display:grid;grid-template-columns:minmax(160px,2fr) minmax(120px,1fr) 86px auto;gap:8px;align-items:end;margin-bottom:14px}.quick-add label{display:flex;flex-direction:column;gap:5px;font-size:11px;font-weight:800;color:#405249}.quick-add input,.quick-add select{width:100%;border:1px solid #ced9d2;border-radius:11px;padding:10px 11px;background:white;color:var(--ink);font:inherit}.date-tools{display:flex;gap:8px;align-items:end}.date-tools label{flex:1}.date-tools .btn{margin-bottom:11px;white-space:nowrap}@media(max-width:640px){.quick-add{grid-template-columns:1fr 1fr}.quick-add .player-name{grid-column:1/-1}.quick-add .add-player-btn{grid-column:1/-1}.date-tools{align-items:stretch;flex-direction:column}.date-tools .btn{margin:0 0 6px}}@media(min-width:700px){.bottom-nav{left:50%;right:auto;transform:translateX(-50%);width:min(720px,100%);border:1px solid var(--line);border-bottom:0;border-radius:18px 18px 0 0}.bottom-nav button small{font-size:10px}.grid-kpi{grid-template-columns:repeat(4,1fr)}}
+
+
+/* --- Mobile app layer --- */
+html,body{overscroll-behavior-y:none;-webkit-tap-highlight-color:transparent}
+button,input,select,textarea{touch-action:manipulation}
+.bottom-nav button{min-height:48px}
+@media(max-width:640px){
+  body{padding-bottom:calc(84px + env(safe-area-inset-bottom));}
+  .app-header{padding-left:14px;padding-right:14px}
+  .app-main{padding:12px 10px 18px}
+  .card{padding:14px;border-radius:16px}
+  .hero-title{font-size:23px}
+  .grid-kpi{grid-template-columns:1fr 1fr;gap:8px}
+  .kpi{padding:11px 8px}.kpi strong{font-size:22px}
+  .bottom-nav{grid-template-columns:repeat(6,minmax(0,1fr));padding-left:2px;padding-right:2px}
+  .bottom-nav button{min-width:0;font-size:18px;padding:5px 0}.bottom-nav button small{font-size:8px;white-space:nowrap}
+  .table-wrap{overflow:visible;border:0;background:transparent}
+  .table{min-width:0;border-collapse:separate;border-spacing:0 9px;background:transparent}
+  .table thead{display:none}
+  .table,.table tbody,.table tr,.table td{display:block;width:100%}
+  .table tr{background:#fff;border:1px solid var(--line);border-radius:15px;padding:10px 12px;box-shadow:0 4px 14px rgba(18,55,38,.05)}
+  .table td{border:0;padding:6px 0;display:grid;grid-template-columns:minmax(88px,34%) 1fr;gap:8px;align-items:center;font-size:14px}
+  .table td::before{content:attr(data-label);font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+  .table td:first-child{display:block;padding:2px 0 9px;border-bottom:1px solid #edf1ee;margin-bottom:3px}
+  .table td:first-child::before{display:none}.table td:first-child strong{font-size:17px}
+  .table select,.table input[type=number],.table input[type=text],.table input:not([type]){width:100%;min-width:0;max-width:none;font-size:16px;padding:10px}
+  .table input[type=checkbox]{width:24px;height:24px;justify-self:start}
+  .toolbar select,.toolbar input{font-size:16px;min-height:44px}
+  .btn{min-height:44px}
+  dialog.modal{width:100vw;max-width:none;max-height:92dvh;margin:auto 0 0 0;border-radius:22px 22px 0 0;overflow:auto}
+  .modal input,.modal select,.modal textarea{font-size:16px;min-height:44px}
+  .list-row{align-items:flex-start;flex-direction:column}
+  .list-row>div:last-child{width:100%}
+  .quick-add{grid-template-columns:1fr 1fr}.quick-add .player-name,.quick-add .add-player-btn{grid-column:1/-1}
+}
+@media(display-mode:standalone){
+  .app-header{padding-top:max(14px,env(safe-area-inset-top))}
+}
+
+</style>
+</head>
+<body>
+  <header class="app-header">
+    <div>
+      <div class="eyebrow">SAINT-PALAIS-SUR-MER</div>
+      <h1>U18 R2 <small style="font-size:11px;color:#65756d;font-weight:700">Mobile 1.0</small></h1>
+    </div>
+    <button id="backupBtn" class="icon-btn" aria-label="Sauvegarde">↥</button>
+  </header>
+
+  <main id="app" class="app-main">
+    <section id="view-dashboard" class="view active"></section>
+    <section id="view-squad" class="view"></section>
+    <section id="view-matches" class="view"></section>
+    <section id="view-callups" class="view"></section>
+    <section id="view-discipline" class="view"></section>
+    <section id="view-stats" class="view"></section>
+  </main>
+
+  <nav class="bottom-nav" aria-label="Navigation principale">
+    <button data-view="dashboard" class="active"><span>⌂</span><small>Accueil</small></button>
+    <button data-view="squad"><span>◎</span><small>Effectif</small></button>
+    <button data-view="matches"><span>▣</span><small>Matchs</small></button>
+    <button data-view="callups"><span>✓</span><small>Convoc.</small></button>
+    <button data-view="discipline"><span>!</span><small>Discipline</small></button>
+    <button data-view="stats"><span>↗</span><small>Stats</small></button>
+  </nav>
+
+  <dialog id="playerDialog" class="modal">
+    <form method="dialog" id="playerForm">
+      <div class="modal-head"><h2>Joueur</h2><button value="cancel" class="icon-btn">×</button></div>
+      <input type="hidden" id="playerId" />
+      <label>Nom<input id="playerName" required maxlength="60" /></label>
+      <label>Poste
+        <select id="playerPosition">
+          <option value="">Non renseigné</option><option>Gardien</option><option>Défenseur</option><option>Milieu</option><option>Attaquant</option>
+        </select>
+      </label>
+      <label>N°<input id="playerNumber" type="number" min="1" max="99" inputmode="numeric" /></label>
+      <div class="actions"><button value="cancel" class="btn secondary">Annuler</button><button id="savePlayerBtn" value="default" class="btn primary">Enregistrer</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="matchDialog" class="modal">
+    <form method="dialog" id="matchForm">
+      <div class="modal-head"><h2>Match</h2><button value="cancel" class="icon-btn">×</button></div>
+      <input type="hidden" id="matchId" />
+      <label>Date<input id="matchDate" type="date" required /></label>
+      <label>Libellé<input id="matchLabel" required maxlength="40" placeholder="J3" /></label>
+      <label>Compétition<input id="matchCompetition" maxlength="60" placeholder="Championnat" /></label>
+      <label>Adversaire<input id="matchOpponent" maxlength="80" placeholder="À renseigner" /></label>
+      <label>Lieu
+        <select id="matchVenue"><option value="Domicile">Domicile</option><option value="Extérieur">Extérieur</option><option value="Neutre">Neutre</option></select>
+      </label>
+      <div class="grid2">
+        <label>Buts SP<input id="matchGoalsFor" type="number" min="0" inputmode="numeric" /></label>
+        <label>Buts adv.<input id="matchGoalsAgainst" type="number" min="0" inputmode="numeric" /></label>
+      </div>
+      <div class="actions"><button value="cancel" class="btn secondary">Annuler</button><button id="saveMatchBtn" value="default" class="btn primary">Enregistrer</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="disciplineDialog" class="modal">
+    <form method="dialog" id="disciplineForm">
+      <div class="modal-head"><h2 id="disciplineTitle">Carton</h2><button value="cancel" class="icon-btn">×</button></div>
+      <input type="hidden" id="disciplineType" />
+      <label>Joueur<select id="disciplinePlayer" required></select></label>
+      <label>Match<select id="disciplineMatch" required></select></label>
+      <div class="date-tools"><label>Date du carton<input id="disciplineDate" type="date" required /></label><button type="button" id="useMatchDate" class="btn secondary small">Date du match</button></div><p class="muted" style="margin-top:-5px">Tu peux saisir librement la date réelle du carton. Le choix du match ne l’écrase plus.</p>
+      <div id="redFields" hidden>
+        <label>Décision commission
+          <select id="redDecision"><option value="pending">En attente</option><option value="decided">Décision reçue</option></select>
+        </label>
+        <label>Nombre TOTAL de matchs de suspension<input id="redSanction" type="number" min="1" max="20" inputmode="numeric" /></label>
+        <label>Premier match à purger
+          <select id="redFirstPurge"><option value="">Automatique : prochain match</option></select>
+        </label>
+        <p class="muted">Choisis le premier match concerné si la commission, un report ou une autre compétition modifie l'ordre normal.</p>
+        <label>Observations<textarea id="redNotes" rows="3" placeholder="Ex. décision du district, sursis…"></textarea></label>
+        <label style="flex-direction:row;align-items:center;gap:9px"><input id="redClosed" type="checkbox" style="width:auto" /> Dossier clôturé / sanction terminée</label>
+      </div>
+      <div class="actions"><button value="cancel" class="btn secondary">Annuler</button><button id="saveDisciplineBtn" value="default" class="btn primary">Enregistrer</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="backupDialog" class="modal">
+    <form method="dialog">
+      <div class="modal-head"><h2>Sauvegarde</h2><button value="cancel" class="icon-btn">×</button></div>
+      <p class="muted">Les données sont enregistrées sur cet appareil. Exporte régulièrement une sauvegarde.</p>
+      <div class="stack">
+        <button type="button" id="exportBtn" class="btn primary">Exporter une sauvegarde JSON</button>
+        <label class="btn secondary file-btn">Importer une sauvegarde<input id="importFile" type="file" accept="application/json" hidden /></label>
+        <button type="button" id="resetBtn" class="btn danger">Réinitialiser l’application</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script>
+(() => {
+  const APP_KEY = 'spm_u18_r2_v1';
+  const VERSION = 4;
+  const roster = ["Jules T.","Léo","Arthur","Paco","Tom","Younès","Guillaume","Mattéo","Alex","Mathis","Eliot","Gabin","Jules","Johan"];
+  const schedule = [
+    ['2026-09-05','J1','Championnat'],['2026-09-12','J2','Championnat'],['2026-09-19','Coupe','Gambardella'],['2026-09-26','J3','Championnat'],
+    ['2026-10-10','J4','Championnat'],['2026-10-24','J5','Championnat'],['2026-11-07','J6','Championnat'],['2026-11-14','J7','Championnat'],
+    ['2026-11-21','J8','Championnat'],['2026-11-28','J9','Championnat'],['2026-12-05','J10','Championnat'],['2026-12-12','J11','Championnat'],
+    ['2027-01-16','J12','Championnat'],['2027-01-23','J13','Championnat'],['2027-01-30','J14','Championnat'],['2027-02-06','J15','Championnat'],
+    ['2027-03-06','J16','Championnat'],['2027-03-13','J17','Championnat'],['2027-03-20','J18','Championnat'],['2027-04-03','J19','Championnat'],
+    ['2027-04-24','J20','Championnat'],['2027-05-01','J21','Championnat'],['2027-05-22','J22','Championnat'],['2027-05-29','J23','Championnat']
+  ];
+
+  const freshState = () => ({
+    version: VERSION,
+    club: 'Saint-Palais-sur-Mer', team: 'U18 R2', season: '2026-2027',
+    players: roster.map((name,i)=>({id:'p'+(i+1),name,position:'',number:null,active:true})),
+    matches: schedule.map((m,i)=>({id:'m'+(i+1),date:m[0],label:m[1],competition:m[2],opponent:'',venue:'Domicile',goalsFor:null,goalsAgainst:null})),
+    yellows: [], reds: [], callups: {}, stats: {}, settings: {yellowWindowMonths:3, yellowThreshold:3}
+  });
+
+  let state = load();
+  let currentView = 'dashboard';
+  let disciplineRefDate = todayISO();
+  let statsMode = 'entry';
+
+  function load(){ try { const x=JSON.parse(localStorage.getItem(APP_KEY)); if(x && x.players && x.matches){ x.version=VERSION; x.players=(x.players||[]).map(p=>({...p,active:p.active!==false})); x.yellows=x.yellows||[]; x.reds=(x.reds||[]).map(r=>({...r,closed:!!r.closed,firstPurgeMatchId:r.firstPurgeMatchId||''})); x.callups=x.callups||{}; x.stats=x.stats||{}; x.settings={yellowWindowMonths:3,yellowThreshold:3,...(x.settings||{})}; return x; } return freshState(); } catch(e){ return freshState(); } }
+  function save(){ localStorage.setItem(APP_KEY, JSON.stringify(state)); render(); }
+  function todayISO(){ const d=new Date(); return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-'); }
+  function parseDate(s){ if(!s) return null; const [y,m,d]=s.split('-').map(Number); return new Date(y,m-1,d,12,0,0); }
+  function fmt(s){ const d=parseDate(s); return d ? new Intl.DateTimeFormat('fr-FR',{weekday:'short',day:'2-digit',month:'2-digit',year:'numeric'}).format(d) : '—'; }
+  function esc(s=''){ return String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c])); }
+  function player(id){ return state.players.find(p=>p.id===id); }
+  function match(id){ return state.matches.find(m=>m.id===id); }
+  function activePlayers(){ return state.players.filter(p=>p.active); }
+  function sortedMatches(){ return [...state.matches].sort((a,b)=>a.date.localeCompare(b.date)); }
+  function nextMatch(ref=todayISO()){ return sortedMatches().find(m=>m.date>=ref) || null; }
+  function addMonths(date, delta){ const d=new Date(date.getTime()); const day=d.getDate(); d.setDate(1); d.setMonth(d.getMonth()+delta); const max=new Date(d.getFullYear(),d.getMonth()+1,0).getDate(); d.setDate(Math.min(day,max)); return d; }
+  function dateISO(d){ return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-'); }
+  function activeYellows(playerId, ref=disciplineRefDate){ const end=parseDate(ref), start=addMonths(end,-(state.settings.yellowWindowMonths||3)); return state.yellows.filter(y=>y.playerId===playerId && parseDate(y.date)>=start && parseDate(y.date)<=end); }
+  function redSuspension(red){ if(red.closed) return {matchIds:[],returnMatch:null,n:0}; const n=red.decision==='decided' && red.sanctionTotal ? Number(red.sanctionTotal) : 1; const all=sortedMatches(); let start=all.findIndex(m=>m.id===red.firstPurgeMatchId); if(start<0) start=all.findIndex(m=>m.date>red.date); if(start<0) return {matchIds:[],returnMatch:null,n}; const sequence=all.slice(start); const mids=sequence.slice(0,n).map(m=>m.id); return {matchIds:mids,returnMatch:sequence[n]||null,n}; }
+  function suspensionForPlayerAtMatch(playerId, matchId){ return state.reds.some(r=>r.playerId===playerId && redSuspension(r).matchIds.includes(matchId)); }
+  function unavailableForMatch(m){ return activePlayers().filter(p=>suspensionForPlayerAtMatch(p.id,m.id)); }
+  function yellowStatus(p,ref=disciplineRefDate){ const n=activeYellows(p.id,ref).length; if(n>=state.settings.yellowThreshold) return {n,text:'Suspension à vérifier',cls:'red'}; if(n===state.settings.yellowThreshold-1) return {n,text:'Prochain jaune critique',cls:'amber'}; if(n===1) return {n,text:'1 jaune actif',cls:'amber'}; return {n,text:'RAS',cls:'green'}; }
+  function attendanceTotals(playerId, throughDate=null){ let present=0, nonStarter=0; const presentStatuses=new Set(['Titulaire','Remplaçant','Convoqué']); const nonStarterStatuses=new Set(['Remplaçant','Convoqué']); sortedMatches().forEach(m=>{ if(throughDate && m.date>throughDate) return; const stat=state.stats[m.id]?.[playerId]; if(stat && Object.prototype.hasOwnProperty.call(stat,'played')){ if(stat.played){ present++; if(!stat.starter) nonStarter++; } return; } const st=state.callups[m.id]?.[playerId]?.status; if(presentStatuses.has(st)) present++; if(nonStarterStatuses.has(st)) nonStarter++; }); return {present,nonStarter}; }
+  function seasonGoalsTotal(playerId, throughDate=null){ let goals=0; sortedMatches().forEach(m=>{ if(throughDate && m.date>throughDate) return; goals+=Number(state.stats[m.id]?.[playerId]?.goals||0); }); return goals; }
+  function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(toast._t); toast._t=setTimeout(()=>t.classList.remove('show'),2200); }
+  function view(name){ currentView=name; document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id==='view-'+name)); document.querySelectorAll('.bottom-nav button').forEach(b=>b.classList.toggle('active',b.dataset.view===name)); render(); }
+
+  function enhanceMobileTables(){ document.querySelectorAll('table.table').forEach(table=>{ const labels=[...table.querySelectorAll('thead th')].map(th=>th.textContent.trim()); table.querySelectorAll('tbody tr').forEach(tr=>{ [...tr.children].forEach((td,i)=>{ td.dataset.label=labels[i]||''; }); }); }); }
+
+  function render(){
+    renderDashboard(); renderSquad(); renderMatches(); renderCallups(); renderDiscipline(); renderStats(); enhanceMobileTables();
+  }
+
+  function renderDashboard(){ const el=document.getElementById('view-dashboard'); const nm=nextMatch(); const unavailable=nm?unavailableForMatch(nm):[]; const alerts=activePlayers().map(p=>({p,s:yellowStatus(p,todayISO())})).filter(x=>x.s.n>=2); const pendingReds=state.reds.filter(r=>!r.closed && r.decision!=='decided'); const played=state.matches.filter(m=>m.goalsFor!==null && m.goalsAgainst!==null); const points=played.reduce((a,m)=>a+(m.goalsFor>m.goalsAgainst?3:m.goalsFor===m.goalsAgainst?1:0),0);
+    el.innerHTML=`
+      ${nm?`<div class="card hero"><div class="muted">PROCHAIN MATCH</div><div class="hero-title">${esc(nm.label)}${nm.opponent?' · '+esc(nm.opponent):''}</div><div class="hero-sub">${fmt(nm.date)} · ${esc(nm.competition||'Match')} · ${esc(nm.venue)}</div></div>`:`<div class="card hero"><div class="hero-title">Saison terminée</div></div>`}
+      <div class="grid-kpi"><div class="kpi"><strong>${activePlayers().length}</strong><span>joueurs actifs</span></div><div class="kpi"><strong>${unavailable.length}</strong><span>suspendus prochain match</span></div><div class="kpi"><strong>${alerts.length}</strong><span>alertes jaunes</span></div><div class="kpi"><strong>${points}</strong><span>points saisis</span></div></div>
+      <div class="section-head"><h2>Alertes</h2></div>
+      <div class="alerts">
+        ${pendingReds.map(r=>`<div class="alert red"><strong>${esc(player(r.playerId)?.name||'?')}</strong> : rouge en attente de décision. Par sécurité, 1 match est provisoirement considéré à purger.</div>`).join('')}
+        ${alerts.map(x=>`<div class="alert ${x.s.cls}"><strong>${esc(x.p.name)}</strong> : ${x.s.n} jaunes actifs sur 3 mois — ${x.s.text}.</div>`).join('')}
+        ${!pendingReds.length&&!alerts.length?'<div class="empty">Aucune alerte disciplinaire prioritaire.</div>':''}
+      </div>
+      ${nm?`<div class="card"><h3>Disponibilité · ${esc(nm.label)}</h3><p><span class="ok-text">${activePlayers().length-unavailable.length} disponibles</span>${unavailable.length?` · <span class="danger-text">${unavailable.length} suspendu(s)</span>`:''}</p>${unavailable.length?`<div class="callup-summary">${unavailable.map(p=>`<span class="pill red">${esc(p.name)}</span>`).join('')}</div>`:''}<button class="btn primary" onclick="window.App.goCallups('${nm.id}')">Préparer la convocation</button></div>`:''}
+      <div class="card"><h3>Principe de sécurité</h3><p class="muted">Un joueur n’est jamais associé à un carton par position de ligne : chaque carton est enregistré avec un joueur + un match + une date. C’est ce qui élimine l’erreur du premier joueur que tu avais dans Excel. Pour un rouge, tu peux aussi imposer le premier match à purger si nécessaire.</p></div>`;
+  }
+
+  function renderSquad(){ const el=document.getElementById('view-squad'); const ps=state.players;
+    el.innerHTML=`<div class="section-head"><h2>Effectif</h2><span class="pill green">${activePlayers().length} actifs</span></div>
+      <div class="card"><h3>Ajouter un joueur</h3><div class="quick-add"><label class="player-name">Nom<input id="quickPlayerName" maxlength="60" placeholder="Nom du joueur"></label><label>Poste<select id="quickPlayerPosition"><option value="">Non renseigné</option><option>Gardien</option><option>Défenseur</option><option>Milieu</option><option>Attaquant</option></select></label><label>N°<input id="quickPlayerNumber" type="number" min="1" max="99" inputmode="numeric" placeholder="—"></label><button class="btn primary add-player-btn" id="quickAddPlayer">Ajouter</button></div><p class="muted" style="margin:0">Le joueur sera immédiatement disponible dans les convocations, statistiques et cartons.</p></div>
+      <div class="list">${ps.map(p=>`<div class="list-row"><div class="list-main"><strong>${esc(p.name)}</strong><span class="muted">${esc(p.position||'Poste non renseigné')}${p.number?' · n°'+p.number:''}${p.active?'':' · Archivé'}</span></div><div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end"><button class="btn small secondary" onclick="window.App.editPlayer('${p.id}')">Modifier</button><button class="btn small ${p.active?'danger':'secondary'}" onclick="window.App.togglePlayer('${p.id}')">${p.active?'Archiver':'Réactiver'}</button></div></div>`).join('')}</div>`;
+    el.querySelector('#quickAddPlayer').onclick=()=>{const name=el.querySelector('#quickPlayerName').value.trim();if(!name){toast('Indique le nom du joueur');el.querySelector('#quickPlayerName').focus();return;}const position=el.querySelector('#quickPlayerPosition').value;const rawNum=el.querySelector('#quickPlayerNumber').value;const number=rawNum===''?null:Number(rawNum);state.players.push({id:'p'+Date.now(),name,position,number,active:true});save();toast(`${name} ajouté à l’effectif`);};
+    el.querySelector('#quickPlayerName').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();el.querySelector('#quickAddPlayer').click();}};
+  }
+
+  function renderMatches(){ const el=document.getElementById('view-matches'); const ms=sortedMatches();
+    el.innerHTML=`<div class="section-head"><h2>Matchs</h2><button class="btn primary" id="addMatch">+ Match</button></div><div class="list">${ms.map(m=>{const played=m.goalsFor!==null&&m.goalsAgainst!==null;return `<div class="list-row"><div class="list-main"><strong>${esc(m.label)} · ${fmt(m.date)}</strong><span class="muted">${esc(m.competition||'')} ${m.opponent?'· '+esc(m.opponent):'· adversaire à renseigner'} · ${esc(m.venue||'')}</span></div><div>${played?`<span class="score">${m.goalsFor}-${m.goalsAgainst}</span>`:`<span class="pill blue">À venir</span>`} <button class="btn small secondary" onclick="window.App.editMatch('${m.id}')">Modifier</button></div></div>`}).join('')}</div>`;
+    el.querySelector('#addMatch').onclick=()=>openMatch();
+  }
+
+  function selectedCallupMatch(){ const saved=sessionStorage.getItem('callupMatch'); return state.matches.some(m=>m.id===saved)?saved:(nextMatch()?.id||sortedMatches()[0]?.id); }
+  function renderCallups(){ const el=document.getElementById('view-callups'); const ms=sortedMatches(); const sel=selectedCallupMatch(); const m=match(sel); if(!m){el.innerHTML='<div class="empty">Aucun match.</div>';return;} const cu=state.callups[sel]||{}; const counts={Titulaire:0,Remplaçant:0,Convoqué:0,Indisponible:0,'Non convoqué':0,Suspendu:0}; activePlayers().forEach(p=>{const st=suspensionForPlayerAtMatch(p.id,sel)?'Suspendu':(cu[p.id]?.status||'Non convoqué');counts[st]=(counts[st]||0)+1;});
+    el.innerHTML=`<div class="section-head"><h2>Convocations</h2><button class="btn secondary" id="copyCallup">Copier</button></div><div class="toolbar"><select id="callupMatchSelect">${ms.map(x=>`<option value="${x.id}" ${x.id===sel?'selected':''}>${esc(x.label)} · ${fmt(x.date)}${x.opponent?' · '+esc(x.opponent):''}</option>`).join('')}</select></div><div class="callup-summary"><span class="pill green">${counts.Titulaire} titulaires</span><span class="pill blue">${counts.Remplaçant} remplaçants</span><span class="pill">${counts.Convoqué} convoqués</span>${counts.Suspendu?`<span class="pill red">${counts.Suspendu} suspendus</span>`:''}</div><div class="table-wrap"><table class="table"><thead><tr><th>Joueur</th><th>Statut</th><th>Prés.</th><th>Non tit.</th><th>Note</th></tr></thead><tbody>${activePlayers().map(p=>{const susp=suspensionForPlayerAtMatch(p.id,sel);const val=susp?'Suspendu':(cu[p.id]?.status||'Non convoqué');const total=attendanceTotals(p.id,m.date);return `<tr><td><strong>${esc(p.name)}</strong></td><td>${susp?'<span class="pill red">Suspendu</span>':`<select data-callup-player="${p.id}">${['Titulaire','Remplaçant','Convoqué','Non convoqué','Indisponible'].map(o=>`<option ${o===val?'selected':''}>${o}</option>`).join('')}</select>`}</td><td><strong>${total.present}</strong></td><td><strong>${total.nonStarter}</strong></td><td><input data-note-player="${p.id}" value="${esc(cu[p.id]?.note||'')}" placeholder="Optionnel"></td></tr>`}).join('')}</tbody></table></div><p class="muted" style="margin:9px 2px 0">Cumul jusqu’au match sélectionné : priorité aux Stats (Joué/Tit.) ; à défaut, reprise des Convocations. Non tit. = présence sans titularisation.</p>`;
+    el.querySelector('#callupMatchSelect').onchange=e=>{sessionStorage.setItem('callupMatch',e.target.value);renderCallups();};
+    el.querySelectorAll('[data-callup-player]').forEach(s=>s.onchange=e=>{const pid=e.target.dataset.callupPlayer;state.callups[sel]=state.callups[sel]||{};state.callups[sel][pid]=state.callups[sel][pid]||{};state.callups[sel][pid].status=e.target.value;persistQuiet();renderCallups();});
+    el.querySelectorAll('[data-note-player]').forEach(i=>i.onchange=e=>{const pid=e.target.dataset.notePlayer;state.callups[sel]=state.callups[sel]||{};state.callups[sel][pid]=state.callups[sel][pid]||{};state.callups[sel][pid].note=e.target.value;persistQuiet();});
+    el.querySelector('#copyCallup').onclick=()=>copyCallup(sel);
+  }
+
+  function renderDiscipline(){ const el=document.getElementById('view-discipline'); const ps=activePlayers(); const redRows=state.reds.filter(r=>!r.closed).map(r=>{const p=player(r.playerId),s=redSuspension(r), rm=s.returnMatch;return `<div class="list-row"><div class="list-main"><strong>${esc(p?.name||'?')} · rouge ${fmt(r.date)}</strong><span class="muted">${r.decision==='decided'?`${s.n} match(s) de suspension`:'Commission en attente · 1 match provisoire'}${s.matchIds.length?' · à purger : '+s.matchIds.map(id=>{const mm=match(id);return esc((mm?.label||'?')+' ('+fmt(mm?.date)+')')}).join(', '):''}${rm?' · retour possible : '+esc(rm.label)+' ('+fmt(rm.date)+')':''}</span></div><button class="btn small secondary" onclick="window.App.editRed('${r.id}')">Gérer</button></div>`}).join('');
+    el.innerHTML=`<div class="section-head"><h2>Discipline</h2></div><div class="discipline-actions"><button id="addYellow" class="btn yellow">+ Carton jaune</button><button id="addRed" class="btn red">+ Carton rouge</button></div><div class="card" style="margin-top:12px"><div class="toolbar"><label style="flex:1">Référence jaunes<input id="refDate" type="date" value="${disciplineRefDate}"></label></div><p class="muted">Compteur sur ${state.settings.yellowWindowMonths} mois glissants. L’application alerte à ${state.settings.yellowThreshold} jaunes, sans inventer la date d’une éventuelle suspension.</p></div><div class="section-head"><h3>Jaunes actifs</h3></div><div class="list">${ps.map(p=>{const s=yellowStatus(p,disciplineRefDate);return `<div class="list-row"><div class="list-main"><strong>${esc(p.name)}</strong><span class="muted">${activeYellows(p.id,disciplineRefDate).map(y=>`${match(y.matchId)?.label||'?'} · ${fmt(y.date)}`).join(' · ')||'Aucun carton actif'}</span></div><span class="pill ${s.cls}">${s.n} · ${s.text}</span></div>`}).join('')}</div><div class="section-head" style="margin-top:18px"><h3>Historique des jaunes</h3></div><div class="list">${[...state.yellows].sort((a,b)=>b.date.localeCompare(a.date)).map(y=>`<div class="list-row"><div class="list-main"><strong>${esc(player(y.playerId)?.name||'?')}</strong><span class="muted">${esc(match(y.matchId)?.label||'Match')} · ${fmt(y.date)}</span></div><div style="display:flex;gap:6px"><button class="btn small secondary" onclick="window.App.editYellow('${y.id}')">Modifier</button><button class="btn small danger" onclick="window.App.deleteYellow('${y.id}')">Supprimer</button></div></div>`).join('')||'<div class="empty">Aucun carton jaune saisi.</div>'}</div><div class="section-head" style="margin-top:18px"><h3>Rouges / suspensions</h3></div><div class="list">${redRows||'<div class="empty">Aucun rouge actif.</div>'}</div>`;
+    el.querySelector('#addYellow').onclick=()=>openDiscipline('yellow'); el.querySelector('#addRed').onclick=()=>openDiscipline('red'); el.querySelector('#refDate').onchange=e=>{disciplineRefDate=e.target.value||todayISO();renderDiscipline();};
+  }
+
+  function renderStats(){ const el=document.getElementById('view-stats'); const ms=sortedMatches(); const sel=sessionStorage.getItem('statsMatch')||[...ms].reverse().find(m=>m.date<=todayISO())?.id||ms[0]?.id; const m=match(sel); const agg=activePlayers().map(p=>{let a={p,apps:0,starts:0,goals:0};Object.values(state.stats).forEach(byP=>{const st=byP[p.id];if(st?.played){a.apps++;a.starts+=st.starter?1:0;}a.goals+=Number(st?.goals||0);});const attendance=attendanceTotals(p.id,todayISO());a.present=attendance.present;a.nonStarter=attendance.nonStarter;return a;}).sort((a,b)=>b.present-a.present||b.apps-a.apps||b.goals-a.goals);
+    el.innerHTML=`<div class="section-head"><h2>Statistiques</h2></div><div class="segmented"><button data-stats-mode="entry" class="${statsMode==='entry'?'active':''}">Saisie match</button><button data-stats-mode="season" class="${statsMode==='season'?'active':''}">Saison</button></div>${statsMode==='entry'&&m?`<div class="toolbar" style="margin-top:12px"><select id="statsMatchSelect">${ms.map(x=>`<option value="${x.id}" ${x.id===sel?'selected':''}>${esc(x.label)} · ${fmt(x.date)}</option>`).join('')}</select></div><div class="table-wrap"><table class="table"><thead><tr><th>Joueur</th><th>Prés.</th><th>Non tit.</th><th>Joué</th><th>Tit.</th><th>Buts</th><th>Buts cumul saison</th></tr></thead><tbody>${activePlayers().map(p=>{const st=state.stats[sel]?.[p.id]||{};const total=attendanceTotals(p.id,m.date);const goalsTotal=seasonGoalsTotal(p.id,m.date);return `<tr><td><strong>${esc(p.name)}</strong></td><td><strong>${total.present}</strong></td><td><strong>${total.nonStarter}</strong></td><td><input type="checkbox" data-stat="played" data-player="${p.id}" ${st.played?'checked':''}></td><td><input type="checkbox" data-stat="starter" data-player="${p.id}" ${st.starter?'checked':''}></td><td><input type="number" min="0" max="20" data-stat="goals" data-player="${p.id}" value="${st.goals??''}"></td><td><strong>${goalsTotal}</strong></td></tr>`}).join('')}</tbody></table></div><p class="muted" style="margin:9px 2px 0">Le cumul des buts additionne automatiquement tous les buts saisis depuis le début de saison jusqu’au match sélectionné. Les anciennes données Minutes et Passes sont conservées dans la sauvegarde mais ne sont plus affichées.</p>`:`<div class="table-wrap" style="margin-top:12px"><table class="table"><thead><tr><th>Joueur</th><th>Prés.</th><th>Non tit.</th><th>Matchs joués</th><th>Tit.</th><th>Buts cumul saison</th><th>J</th><th>R</th></tr></thead><tbody>${agg.map(a=>`<tr><td><strong>${esc(a.p.name)}</strong></td><td><strong>${a.present}</strong></td><td><strong>${a.nonStarter}</strong></td><td>${a.apps}</td><td>${a.starts}</td><td><strong>${a.goals}</strong></td><td>${state.yellows.filter(y=>y.playerId===a.p.id).length}</td><td>${state.reds.filter(r=>r.playerId===a.p.id).length}</td></tr>`).join('')}</tbody></table></div><p class="muted" style="margin:9px 2px 0">Buts cumul saison = somme de tous les buts saisis sur les rencontres de la saison.</p>`}`;
+    el.querySelectorAll('[data-stats-mode]').forEach(b=>b.onclick=()=>{statsMode=b.dataset.statsMode;renderStats();}); if(statsMode==='entry'&&m){el.querySelector('#statsMatchSelect').onchange=e=>{sessionStorage.setItem('statsMatch',e.target.value);renderStats();}; el.querySelectorAll('[data-stat]').forEach(inp=>inp.onchange=e=>{const pid=e.target.dataset.player,key=e.target.dataset.stat;state.stats[sel]=state.stats[sel]||{};state.stats[sel][pid]=state.stats[sel][pid]||{};state.stats[sel][pid][key]=(e.target.type==='checkbox')?e.target.checked:(e.target.value===''?'':Number(e.target.value));persistQuiet();renderStats();});}
+  }
+
+  function persistQuiet(){ localStorage.setItem(APP_KEY,JSON.stringify(state)); }
+
+  function openPlayer(id=null){ const d=document.getElementById('playerDialog'),p=id?player(id):null; document.getElementById('playerId').value=p?.id||'';document.getElementById('playerName').value=p?.name||'';document.getElementById('playerPosition').value=p?.position||'';document.getElementById('playerNumber').value=p?.number||'';d.showModal(); }
+  function openMatch(id=null){ const d=document.getElementById('matchDialog'),m=id?match(id):null;document.getElementById('matchId').value=m?.id||'';document.getElementById('matchDate').value=m?.date||todayISO();document.getElementById('matchLabel').value=m?.label||'';document.getElementById('matchCompetition').value=m?.competition||'Championnat';document.getElementById('matchOpponent').value=m?.opponent||'';document.getElementById('matchVenue').value=m?.venue||'Domicile';document.getElementById('matchGoalsFor').value=m?.goalsFor??'';document.getElementById('matchGoalsAgainst').value=m?.goalsAgainst??'';d.showModal(); }
+  function openDiscipline(type, recordId=null){ const d=document.getElementById('disciplineDialog'),r=type==='red'&&recordId?state.reds.find(x=>x.id===recordId):null,y=type==='yellow'&&recordId?state.yellows.find(x=>x.id===recordId):null;document.getElementById('disciplineType').value=type;document.getElementById('disciplineTitle').textContent=type==='red'?'Carton rouge':'Carton jaune';document.getElementById('redFields').hidden=type!=='red';const pSel=document.getElementById('disciplinePlayer'),mSel=document.getElementById('disciplineMatch'),fpSel=document.getElementById('redFirstPurge');pSel.innerHTML=activePlayers().map(p=>`<option value="${p.id}">${esc(p.name)}</option>`).join('');mSel.innerHTML=sortedMatches().map(m=>`<option value="${m.id}">${esc(m.label)} · ${fmt(m.date)}</option>`).join('');fpSel.innerHTML='<option value="">Automatique : prochain match</option>'+sortedMatches().map(m=>`<option value="${m.id}">${esc(m.label)} · ${fmt(m.date)}</option>`).join('');delete d.dataset.redId;delete d.dataset.yellowId;const rec=r||y;if(rec){pSel.value=rec.playerId;mSel.value=rec.matchId||'';document.getElementById('disciplineDate').value=rec.date||todayISO();if(type==='red'){document.getElementById('redDecision').value=r.decision||'pending';document.getElementById('redSanction').value=r.sanctionTotal||'';fpSel.value=r.firstPurgeMatchId||'';document.getElementById('redNotes').value=r.notes||'';document.getElementById('redClosed').checked=!!r.closed;d.dataset.redId=r.id;}else{d.dataset.yellowId=y.id;}}else{const nm=[...sortedMatches()].reverse().find(m=>m.date<=todayISO())||nextMatch();if(nm)mSel.value=nm.id;document.getElementById('disciplineDate').value=nm?.date||todayISO();document.getElementById('redDecision').value='pending';document.getElementById('redSanction').value='';fpSel.value='';document.getElementById('redNotes').value='';document.getElementById('redClosed').checked=false;} d.showModal(); }
+
+  function togglePlayer(id){const p=player(id);if(!p)return;p.active=!p.active;save();toast(p.active?`${p.name} réactivé`:`${p.name} archivé`);}
+  function deleteYellow(id){const y=state.yellows.find(x=>x.id===id);if(!y)return;const name=player(y.playerId)?.name||'ce joueur';if(confirm(`Supprimer ce carton jaune de ${name} ?`)){state.yellows=state.yellows.filter(x=>x.id!==id);save();toast('Carton jaune supprimé');}}
+
+
+  document.querySelectorAll('.bottom-nav button').forEach(b=>b.onclick=()=>view(b.dataset.view));
+  document.getElementById('backupBtn').onclick=()=>document.getElementById('backupDialog').showModal();
+  document.getElementById('savePlayerBtn').onclick=e=>{e.preventDefault();const id=document.getElementById('playerId').value,name=document.getElementById('playerName').value.trim();if(!name)return;const data={name,position:document.getElementById('playerPosition').value,number:Number(document.getElementById('playerNumber').value)||null};if(id)Object.assign(player(id),data);else state.players.push({id:'p'+Date.now(),...data,active:true});document.getElementById('playerDialog').close();save();toast('Effectif mis à jour');};
+  document.getElementById('saveMatchBtn').onclick=e=>{e.preventDefault();const id=document.getElementById('matchId').value,date=document.getElementById('matchDate').value,label=document.getElementById('matchLabel').value.trim();if(!date||!label)return;const gf=document.getElementById('matchGoalsFor').value,ga=document.getElementById('matchGoalsAgainst').value;const data={date,label,competition:document.getElementById('matchCompetition').value.trim(),opponent:document.getElementById('matchOpponent').value.trim(),venue:document.getElementById('matchVenue').value,goalsFor:gf===''?null:Number(gf),goalsAgainst:ga===''?null:Number(ga)};if(id)Object.assign(match(id),data);else state.matches.push({id:'m'+Date.now(),...data});document.getElementById('matchDialog').close();save();toast('Match enregistré');};
+  document.getElementById('useMatchDate').onclick=()=>{const m=match(document.getElementById('disciplineMatch').value);if(m){document.getElementById('disciplineDate').value=m.date;toast('Date du match reprise');}};
+  document.getElementById('redDecision').onchange=e=>{document.getElementById('redSanction').required=e.target.value==='decided';};
+  document.getElementById('saveDisciplineBtn').onclick=e=>{e.preventDefault();const type=document.getElementById('disciplineType').value,pid=document.getElementById('disciplinePlayer').value,mid=document.getElementById('disciplineMatch').value,date=document.getElementById('disciplineDate').value;if(!pid||!mid||!date){toast('Joueur, match et date du carton sont obligatoires');return;}if(type==='yellow'){const did=document.getElementById('disciplineDialog').dataset.yellowId;const duplicate=state.yellows.some(y=>y.playerId===pid&&y.matchId===mid&&y.id!==did);if(duplicate){toast('Un jaune est déjà enregistré pour ce joueur sur ce match');return;}const obj={playerId:pid,matchId:mid,date};if(did)Object.assign(state.yellows.find(y=>y.id===did),obj);else state.yellows.push({id:'y'+Date.now(),...obj});}else{const decision=document.getElementById('redDecision').value,sanction=document.getElementById('redSanction').value;if(decision==='decided'&&!sanction){toast('Indique le nombre total de matchs');return;}const obj={playerId:pid,matchId:mid,date,decision,sanctionTotal:sanction?Number(sanction):null,firstPurgeMatchId:document.getElementById('redFirstPurge').value||'',notes:document.getElementById('redNotes').value.trim(),closed:document.getElementById('redClosed').checked};const did=document.getElementById('disciplineDialog').dataset.redId;if(did)Object.assign(state.reds.find(r=>r.id===did),obj);else state.reds.push({id:'r'+Date.now(),...obj});}document.getElementById('disciplineDialog').close();save();toast(type==='yellow'?'Carton jaune enregistré':'Carton rouge enregistré');};
+  document.getElementById('exportBtn').onclick=()=>{const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`saint-palais-u18-r2-backup-${todayISO()}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);toast('Sauvegarde exportée');};
+  document.getElementById('importFile').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const x=JSON.parse(r.result);if(!x.players||!x.matches)throw new Error();state=x;state.version=VERSION;state.players=(state.players||[]).map(p=>({...p,active:p.active!==false}));state.yellows=state.yellows||[];state.reds=(state.reds||[]).map(r=>({...r,closed:!!r.closed,firstPurgeMatchId:r.firstPurgeMatchId||''}));state.callups=state.callups||{};state.stats=state.stats||{};state.settings={yellowWindowMonths:3,yellowThreshold:3,...(state.settings||{})};save();document.getElementById('backupDialog').close();toast('Sauvegarde restaurée');}catch{toast('Fichier de sauvegarde invalide');}};r.readAsText(f);};
+  document.getElementById('resetBtn').onclick=()=>{if(confirm('Réinitialiser toutes les données de l’application ?')){state=freshState();save();document.getElementById('backupDialog').close();toast('Application réinitialisée');}};
+
+  function copyCallup(matchId){ const m=match(matchId),cu=state.callups[matchId]||{};const groups={Titulaire:[],Remplaçant:[],Convoqué:[]};activePlayers().forEach(p=>{if(suspensionForPlayerAtMatch(p.id,matchId))return;const st=cu[p.id]?.status;if(groups[st])groups[st].push(p.name);});let text=`SAINT-PALAIS U18 R2\n${m.label} — ${fmt(m.date)}${m.opponent?' — '+m.opponent:''}\n\n`;if(groups.Titulaire.length)text+=`Titulaires : ${groups.Titulaire.join(', ')}\n`;if(groups.Remplaçant.length)text+=`Remplaçants : ${groups.Remplaçant.join(', ')}\n`;if(groups.Convoqué.length)text+=`Convoqués : ${groups.Convoqué.join(', ')}\n`;if(navigator.clipboard?.writeText)navigator.clipboard.writeText(text).then(()=>toast('Convocation copiée'));else{const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();toast('Convocation copiée');} }
+
+  window.App={editPlayer:openPlayer,togglePlayer,editMatch:openMatch,editYellow:(id)=>openDiscipline('yellow',id),deleteYellow,editRed:(id)=>openDiscipline('red',id),goCallups:(id)=>{sessionStorage.setItem('callupMatch',id);view('callups');}};
+
+  if('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('sw.js').then(reg=>{reg.update().catch(()=>{});}).catch(()=>{});
+  render();
+})();
+
+</script>
+</body>
+</html>
