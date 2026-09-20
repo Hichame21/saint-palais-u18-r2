@@ -432,6 +432,11 @@
     return sortedMatches().filter(m=>(m.status||((m.goalsFor!==null&&m.goalsAgainst!==null)?'Terminé':'À venir'))==='Terminé');
   }
 
+
+  function isChampionshipMatch(m){
+    return String(m?.competition||'').trim().toLowerCase()==='championnat';
+  }
+
   function actualPlayerStats(playerId){
     let apps=0,starts=0,goals=0;
     completedMatches().forEach(m=>{
@@ -462,14 +467,14 @@
     renderDashboard(); renderSquad(); renderMatches(); renderCallups(); renderDiscipline(); renderStats();
   }
 
-  function renderDashboard(){ const el=document.getElementById('view-dashboard'); const nm=nextMatch(); const unavailable=nm?unavailableForMatch(nm):[]; const alerts=activePlayers().map(p=>({p,s:yellowStatus(p,todayISO())})).filter(x=>x.s.n>=2); const pendingReds=state.reds.filter(r=>!r.closed && r.decision!=='decided'); const played=completedMatches(); const points=played.reduce((a,m)=>a+(m.goalsFor>m.goalsAgainst?3:m.goalsFor===m.goalsAgainst?1:0),0); const incompleteStats=incompleteStatsMatches(); const nmCounts=nm?callupCounts(nm.id):null; const todo=[]; const season=seasonOverview();
+  function renderDashboard(){ const el=document.getElementById('view-dashboard'); const nm=nextMatch(); const unavailable=nm?unavailableForMatch(nm):[]; const alerts=activePlayers().map(p=>({p,s:yellowStatus(p,todayISO())})).filter(x=>x.s.n>=2); const pendingReds=state.reds.filter(r=>!r.closed && r.decision!=='decided'); const played=completedMatches(); const championshipPlayed=played.filter(isChampionshipMatch); const points=championshipPlayed.reduce((a,m)=>a+(m.goalsFor>m.goalsAgainst?3:m.goalsFor===m.goalsAgainst?1:0),0); const incompleteStats=incompleteStatsMatches(); const nmCounts=nm?callupCounts(nm.id):null; const todo=[]; const season=seasonOverview();
     if(nm && nmCounts.Titulaire<11) todo.push({cls:'warn',title:`Convocation ${nm.label} à compléter`,detail:`${nmCounts.Titulaire}/11 titulaires renseignés`,action:`<button class="btn small primary" onclick="window.App.goCallups('${nm.id}')">Ouvrir</button>`});
     if(incompleteStats.length) todo.push({cls:'warn',title:`${incompleteStats.length} match(s) terminé(s) avec stats incomplètes`,detail:incompleteStats.map(m=>m.label).join(', '),action:`<button class="btn small secondary" onclick="window.App.goStats('${incompleteStats[0].id}')">Vérifier</button>`});
     pendingReds.forEach(r=>todo.push({cls:'urgent',title:`Décision disciplinaire en attente · ${esc(player(r.playerId)?.name||'?')}`,detail:`Rouge du ${fmt(r.date)}`,action:`<button class="btn small danger" onclick="window.App.goDiscipline()">Gérer</button>`}));
     if(!todo.length) todo.push({cls:'ok',title:'Rien de prioritaire à compléter',detail:'Convocations, statistiques et discipline sont à jour.',action:''});
     el.innerHTML=`
       ${nm?`<div class="card hero"><div class="muted">PROCHAIN MATCH</div><div class="hero-title">${esc(nm.label)}${nm.opponent?' · '+esc(nm.opponent):''}</div><div class="hero-sub">${fmt(nm.date)} · ${esc(nm.competition||'Match')} · ${esc(nm.venue)}</div></div>`:`<div class="card hero"><div class="hero-title">Saison terminée</div></div>`}
-      <div class="grid-kpi"><div class="kpi"><strong>${activePlayers().length}</strong><span>joueurs actifs</span></div><div class="kpi"><strong>${unavailable.length}</strong><span>suspendus prochain match</span></div><div class="kpi"><strong>${alerts.length}</strong><span>alertes jaunes</span></div><div class="kpi"><strong>${points}</strong><span>points saisis</span></div></div>
+      <div class="grid-kpi"><div class="kpi"><strong>${activePlayers().length}</strong><span>joueurs actifs</span></div><div class="kpi"><strong>${unavailable.length}</strong><span>suspendus prochain match</span></div><div class="kpi"><strong>${alerts.length}</strong><span>alertes jaunes</span></div><div class="kpi"><strong>${points}</strong><span>points championnat</span></div></div>
 
       <div class="section-head"><h2>Pilotage saison</h2><span class="pill">${season.matches} match${season.matches>1?'s':''} terminé${season.matches>1?'s':''}</span></div>
       <div class="season-panel">
