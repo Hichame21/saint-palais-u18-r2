@@ -30,7 +30,7 @@
   <header class="app-header">
     <div>
       <div class="eyebrow">SAINT-PALAIS-SUR-MER</div>
-      <h1>U18 R2 <small style="font-size:11px;color:#65756d;font-weight:700">V1.30.2</small></h1>
+      <h1>U18 R2 <small style="font-size:11px;color:#65756d;font-weight:700">V1.30.3</small></h1>
     </div>
     <div class="header-actions"><span id="syncBadge" class="sync-badge">Local</span><button id="coachBtn" class="btn small secondary" type="button">Accès coach</button><button id="authBtn" class="btn small secondary" type="button">Connexion</button><button id="backupBtn" class="icon-btn" aria-label="Sauvegarde">↥</button></div>
   </header>
@@ -533,19 +533,25 @@
   }
 
   function seasonOverview(){
-    const ms=completedMatches();
-    let wins=0,draws=0,losses=0,gf=0,ga=0;
-    ms.forEach(m=>{
-      const a=Number(m.goalsFor||0),b=Number(m.goalsAgainst||0);
-      gf+=a; ga+=b;
-      if(a>b)wins++; else if(a===b)draws++; else losses++;
-    });
-    const form=ms.slice(-5).map(m=>m.goalsFor>m.goalsAgainst?'V':m.goalsFor===m.goalsAgainst?'N':'D');
+    const all=completedMatches();
+    const league=all.filter(isChampionshipMatch);
+    const cup=all.filter(isCupMatch);
+    const summarize=ms=>{
+      let wins=0,draws=0,losses=0,gf=0,ga=0;
+      ms.forEach(m=>{
+        const a=Number(m.goalsFor||0),b=Number(m.goalsAgainst||0);
+        gf+=a;ga+=b;
+        if(a>b)wins++; else if(a===b)draws++; else losses++;
+      });
+      return {matches:ms.length,wins,draws,losses,gf,ga,diff:gf-ga,form:ms.slice(-5).map(m=>m.goalsFor>m.goalsAgainst?'V':m.goalsFor===m.goalsAgainst?'N':'D')};
+    };
+    const leagueSummary=summarize(league);
+    const cupSummary=summarize(cup);
     const players=activePlayers().map(p=>({p,...actualPlayerStats(p.id)}));
     const scorers=[...players].filter(a=>a.goals>0).sort((a,b)=>b.goals-a.goals||b.apps-a.apps||a.p.name.localeCompare(b.p.name,'fr')).slice(0,3);
     const allPlayed=[...players].filter(a=>a.apps>0).sort((a,b)=>b.apps-a.apps||b.starts-a.starts||a.p.name.localeCompare(b.p.name,'fr'));
     const attendance=allPlayed.slice(0,3);
-    return {matches:ms.length,wins,draws,losses,gf,ga,diff:gf-ga,form,scorers,attendance,allPlayed};
+    return {...leagueSummary,totalMatches:all.length,cup:cupSummary,scorers,attendance,allPlayed};
   }
 
   function render(){
@@ -633,14 +639,16 @@
       </div>`:''}
       <div class="grid-kpi"><div class="kpi"><strong>${activePlayers().length}</strong><span>joueurs actifs</span></div><button type="button" class="kpi kpi-action nav-only" onclick="window.App.disciplineSummary('suspensions')" aria-label="Voir les joueurs suspendus au prochain match"><strong>${unavailable.length}</strong><span>suspendus prochain match</span></button><button type="button" class="kpi kpi-action nav-only" onclick="window.App.disciplineSummary('yellows')" aria-label="Voir les joueurs avec alerte jaune"><strong>${alerts.length}</strong><span>alertes jaunes</span></button><div class="kpi"><strong>${points}</strong><span>points championnat</span></div></div>
 
-      <div class="section-head"><h2>Pilotage saison</h2><span class="pill">${season.matches} match${season.matches>1?'s':''} terminé${season.matches>1?'s':''}</span></div>
+      <div class="section-head"><h2>Pilotage saison</h2><span class="pill">${season.totalMatches} match${season.totalMatches>1?'s':''} terminé${season.totalMatches>1?'s':''}</span></div>
       <div class="season-panel">
         <div class="season-card">
-          <h3>Bilan</h3>
+          <h3>Bilan championnat</h3>
           <div class="season-record"><div><strong>${season.wins}</strong><span>Victoires</span></div><div><strong>${season.draws}</strong><span>Nuls</span></div><div><strong>${season.losses}</strong><span>Défaites</span></div></div>
-          <div class="callup-summary" style="margin-top:12px"><span class="pill green">${season.gf} BP</span><span class="pill red">${season.ga} BC</span><span class="pill ${season.diff>=0?'green':'red'}">${season.diff>=0?'+':''}${season.diff} diff.</span></div>
-          <div class="muted">Forme récente</div>
-          <div class="form-strip">${season.form.length?season.form.map(x=>`<span class="form-dot ${x==='V'?'win':x==='N'?'draw':'loss'}">${x}</span>`).join(''):'<span class="muted">Aucun match terminé.</span>'}</div>
+          <div class="callup-summary" style="margin-top:12px"><span class="pill green">${season.gf} BP championnat</span><span class="pill red">${season.ga} BC championnat</span><span class="pill ${season.diff>=0?'green':'red'}">${season.diff>=0?'+':''}${season.diff} diff.</span></div>
+          <div class="muted" style="margin-top:12px">Coupe</div>
+          <div class="callup-summary"><span class="pill blue">${season.cup.matches} match${season.cup.matches>1?'s':''}</span><span class="pill green">${season.cup.gf} BP coupe</span><span class="pill red">${season.cup.ga} BC coupe</span></div>
+          <div class="muted">Forme récente championnat</div>
+          <div class="form-strip">${season.form.length?season.form.map(x=>`<span class="form-dot ${x==='V'?'win':x==='N'?'draw':'loss'}">${x}</span>`).join(''):'<span class="muted">Aucun match de championnat terminé.</span>'}</div>
         </div>
         <div class="season-card">
           <h3>Leaders</h3>
@@ -1603,12 +1611,12 @@
       let reloading=false;
       navigator.serviceWorker.addEventListener('controllerchange',()=>{
         if(reloading)return;
-        if(sessionStorage.getItem('swReloadV1302')==='1')return;
+        if(sessionStorage.getItem('swReloadV1303')==='1')return;
         reloading=true;
-        sessionStorage.setItem('swReloadV1302','1');
+        sessionStorage.setItem('swReloadV1303','1');
         location.reload();
       });
-      const reg=await navigator.serviceWorker.register('./sw.js?v=1302',{scope:'./',updateViaCache:'none'});
+      const reg=await navigator.serviceWorker.register('./sw.js?v=1303',{scope:'./',updateViaCache:'none'});
       await reg.update();
       if(reg.waiting) reg.waiting.postMessage({type:'SKIP_WAITING'});
     }catch(e){
