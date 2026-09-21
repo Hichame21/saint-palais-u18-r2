@@ -796,8 +796,6 @@
     const lu=lineupForMatch(matchId,[]);
     const slots=formationSlots(lu.formation);
     const yellowCounts=Object.fromEntries(activePlayers().map(p=>[p.id,activeYellows(p.id,m.date).length]));
-    const availabilityCounts={Disponible:0,Incertain:0,Absent:0,'Blessé':0,Suspendu:0};
-    activePlayers().forEach(p=>{const a=matchAvailability(sel,p.id);availabilityCounts[a]=(availabilityCounts[a]||0)+1;});
     const starterIds=slots.map(s=>lu.slots?.[s.id]?.playerId).filter(Boolean);
     const starters=starterIds.map(pid=>{
       const p=player(pid), num=lu.playerNumbers?.[pid]??Object.values(lu.slots||{}).find(e=>e?.playerId===pid)?.number??p?.number??'';
@@ -1130,13 +1128,18 @@
   }
 
   function selectedCallupMatch(){ const saved=sessionStorage.getItem('callupMatch'); return state.matches.some(m=>m.id===saved)?saved:(nextMatch()?.id||sortedMatches()[0]?.id); }
-  function renderCallups(){ const el=document.getElementById('view-callups'); const ms=sortedMatches(); const sel=selectedCallupMatch(); const m=match(sel); if(!m){el.innerHTML='<div class="empty">Aucun match.</div>';return;} const cu=state.callups[sel]||{}; const counts=callupCounts(sel); const prev=lastCallupBefore(sel);
+  function renderCallups(){ state.availability=state.availability||{}; const el=document.getElementById('view-callups'); const ms=sortedMatches(); const sel=selectedCallupMatch(); const m=match(sel); if(!m){el.innerHTML='<div class="empty">Aucun match.</div>';return;} const cu=state.callups[sel]||{}; const counts=callupCounts(sel); const prev=lastCallupBefore(sel);
     const statuses=activePlayers().map(p=>({p,susp:suspensionForPlayerAtMatch(p.id,sel),status:suspensionForPlayerAtMatch(p.id,sel)?'Suspendu':(cu[p.id]?.status||'Non convoqué')}));
     const starters=statuses.filter(x=>x.status==='Titulaire').map(x=>x.p);
     const substitutes=statuses.filter(x=>x.status==='Remplaçant').map(x=>x.p);
     const unavailable=statuses.filter(x=>x.status==='Indisponible').map(x=>x.p);
     const suspended=statuses.filter(x=>x.status==='Suspendu').map(x=>x.p);
     const yellowCounts=Object.fromEntries(activePlayers().map(p=>[p.id,activeYellows(p.id,m.date).length]));
+    const availabilityCounts={Disponible:0,Incertain:0,Absent:0,'Blessé':0,Suspendu:0};
+    activePlayers().forEach(p=>{
+      const av=matchAvailability(sel,p.id);
+      availabilityCounts[av]=(availabilityCounts[av]||0)+1;
+    });
     const lineup=lineupForMatch(sel,starters);
     const slots=formationSlots(lineup.formation);
     const eligible=activePlayers().filter(p=>availabilityAllowsSelection(sel,p.id));
