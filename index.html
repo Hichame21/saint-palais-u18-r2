@@ -33,7 +33,7 @@
     </div>
     <div class="header-actions"><span id="syncBadge" class="sync-badge">Local</span><button id="coachBtn" class="btn small secondary" type="button">Accès coach</button><button id="authBtn" class="btn small secondary" type="button">Connexion</button><button id="backupBtn" class="icon-btn" aria-label="Sauvegarde">↥</button></div>
   </header>
-  <div id="readonlyBanner" class="readonly-banner">Lecture seule — seul le compte propriétaire peut modifier. Les coachs consultent avec leur code d’accès.</div>
+  <div id="readonlyBanner" class="readonly-banner">Consultation libre — connecte-toi comme propriétaire pour modifier. Les coachs peuvent aussi utiliser leur code d’accès.</div>
 
   <main id="app" class="app-main">
     <section id="view-dashboard" class="view active"></section>
@@ -236,7 +236,34 @@
   function canEdit(){ return !!(navigator.onLine && currentSession?.user?.id && ownerVerified); }
 
 
-  function load(){ try { const x=JSON.parse(localStorage.getItem(APP_KEY)); if(x && x.players && x.matches){ x.version=VERSION; x.players=(x.players||[]).map(p=>({...p,active:p.active!==false})); x.matches=(x.matches||[]).map(m=>{const status=m.status||((m.goalsFor!==null&&m.goalsFor!==undefined&&m.goalsAgainst!==null&&m.goalsAgainst!==undefined)?'Terminé':'À venir');return {...m,status,locked:m.locked===undefined?status==='Terminé':!!m.locked};}); x.yellows=x.yellows||[]; x.reds=(x.reds||[]).map(r=>({...r,closed:!!r.closed,firstPurgeMatchId:r.firstPurgeMatchId||''})); x.callups=x.callups||{}; x.availability=x.availability||{}; Object.values(x.callups).forEach(byP=>Object.values(byP||{}).forEach(c=>{if(c?.status==='Convoqué') c.status='Remplaçant';})); x.stats=x.stats||{}; x.lineups=x.lineups||{}; x.settings={yellowWindowMonths:3,yellowThreshold:3,...(x.settings||{})}; return x; } return freshState(); } catch(e){ return freshState(); } }
+  function load(){
+    try{
+      const x=JSON.parse(localStorage.getItem(APP_KEY));
+      return (x&&x.players&&x.matches)?normalizeStateV129(x):freshState();
+    }catch(e){
+      return freshState();
+    }
+  }
+
+  function normalizeStateV129(s){
+    if(!s||typeof s!=='object') return freshState();
+    s.version=VERSION;
+    s.players=(s.players||[]).map(p=>({...p,active:p.active!==false}));
+    s.matches=(s.matches||[]).map(m=>{
+      const status=m.status||((m.goalsFor!==null&&m.goalsFor!==undefined&&m.goalsAgainst!==null&&m.goalsAgainst!==undefined)?'Terminé':'À venir');
+      return {...m,status,locked:m.locked===undefined?status==='Terminé':!!m.locked};
+    });
+    s.yellows=s.yellows||[];
+    s.reds=(s.reds||[]).map(r=>({...r,closed:!!r.closed,firstPurgeMatchId:r.firstPurgeMatchId||''}));
+    s.callups=s.callups||{};
+    Object.values(s.callups).forEach(byP=>Object.values(byP||{}).forEach(x=>{if(x?.status==='Convoqué')x.status='Remplaçant';}));
+    s.availability=s.availability||{};
+    s.stats=s.stats||{};
+    s.lineups=s.lineups||{};
+    s.settings={yellowWindowMonths:3,yellowThreshold:3,...(s.settings||{})};
+    return s;
+  }
+
   function save(){ localStorage.setItem(APP_KEY, JSON.stringify(state)); render(); scheduleCloudSave(); }
   function todayISO(){ const d=new Date(); return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-'); }
   function parseDate(s){ if(!s) return null; const [y,m,d]=s.split('-').map(Number); return new Date(y,m-1,d,12,0,0); }
@@ -513,7 +540,22 @@
   }
 
   function render(){
-    renderDashboard(); renderSquad(); renderMatches(); renderCallups(); renderDiscipline(); renderStats();
+    const jobs=[
+      ['dashboard',renderDashboard],
+      ['squad',renderSquad],
+      ['matches',renderMatches],
+      ['callups',renderCallups],
+      ['discipline',renderDiscipline],
+      ['stats',renderStats]
+    ];
+    jobs.forEach(([name,fn])=>{
+      try{fn();}
+      catch(e){
+        console.error('Erreur rendu '+name,e);
+        const el=document.getElementById('view-'+name);
+        if(el && !el.innerHTML.trim()) el.innerHTML='<div class="empty">Cette rubrique rencontre un problème de chargement. Les autres parties de l’application restent disponibles.</div>';
+      }
+    });
   }
 
   function renderDashboard(){ const el=document.getElementById('view-dashboard'); const nm=nextMatch(); const unavailable=nm?unavailableForMatch(nm):[]; const alerts=activePlayers().map(p=>({p,s:yellowStatus(p,todayISO())})).filter(x=>x.s.n>=2); const pendingReds=state.reds.filter(r=>!r.closed && r.decision!=='decided'); const played=completedMatches(); const championshipPlayed=played.filter(isChampionshipMatch); const points=championshipPlayed.reduce((a,m)=>a+(m.goalsFor>m.goalsAgainst?3:m.goalsFor===m.goalsAgainst?1:0),0); const incompleteStats=incompleteStatsMatches(); const nmCounts=nm?callupCounts(nm.id):null; const todo=[]; const season=seasonOverview();
@@ -1214,7 +1256,7 @@
       const data=await res.json().catch(()=>({}));
       if(!res.ok)throw new Error(data.error||'Code incorrect');
       if(!data?.state)throw new Error('Aucune donnée disponible');
-      state=data.state; state.version=VERSION;
+      state=normalizeStateV129(data.state);
       localStorage.setItem(APP_KEY,JSON.stringify(state));
       localStorage.setItem(COACH_CODE_KEY,code);
       lastCloudAt=data.updated_at||''; localRevision=Number(data.revision||0);
@@ -1254,7 +1296,7 @@
       if(data?.state){
         const serverRev=Number(data.revision||1);
         if(forceReload || !localRevision || serverRev>=localRevision){
-          state=data.state; state.version=VERSION; localStorage.setItem(APP_KEY,JSON.stringify(state));
+          state=normalizeStateV129(data.state); localStorage.setItem(APP_KEY,JSON.stringify(state));
           lastCloudAt=data.updated_at||'';localRevision=serverRev;
           localStorage.setItem(CLOUD_MARKER_KEY,lastCloudAt);localStorage.setItem(CLOUD_REV_KEY,String(localRevision));
           lastCloudPayload=JSON.stringify(state); render();
@@ -1332,7 +1374,7 @@
     try{
       const {data,error}=await cloud.from('team_state_history').select('state').eq('id',id).eq('user_id',currentSession.user.id).single();if(error)throw error;
       const cur=await cloud.from('team_state').select('revision').eq('user_id',currentSession.user.id).single();if(cur.error)throw cur.error;
-      state=data.state;state.version=VERSION;localRevision=Number(cur.data.revision||0);lastCloudPayload='';localStorage.setItem(APP_KEY,JSON.stringify(state));
+      state=normalizeStateV129(data.state);localRevision=Number(cur.data.revision||0);lastCloudPayload='';localStorage.setItem(APP_KEY,JSON.stringify(state));
       const ok=await pushCloud(true);if(ok){render();toast('Sauvegarde restaurée');await loadHistory();}
     }catch(e){console.error(e);toast('Restauration impossible');}
   }
@@ -1483,7 +1525,9 @@
   document.getElementById('saveCloudNowBtn').onclick=()=>pushCloud(true);
   document.getElementById('reloadCloudBtn').onclick=()=>syncOnLogin(true);
   document.getElementById('refreshHistoryBtn').onclick=loadHistory;
-  render(); updateAccessUI(); initCloud();
+  try{render();}catch(e){console.error('Erreur initialisation affichage',e);}
+  updateAccessUI();
+  initCloud().catch(e=>{console.warn('Initialisation cloud impossible',e);setSyncStatus('Lecture seule','warn');});
 })();
 
 </script>
