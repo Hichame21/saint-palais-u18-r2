@@ -30,7 +30,7 @@
   <header class="app-header">
     <div>
       <div class="eyebrow">SAINT-PALAIS-SUR-MER</div>
-      <h1>U18 R2 <small style="font-size:11px;color:#65756d;font-weight:700">V1.30.3</small></h1>
+      <h1>U18 R2 <small style="font-size:11px;color:#65756d;font-weight:700">V1.30.4</small></h1>
     </div>
     <div class="header-actions"><span id="syncBadge" class="sync-badge">Local</span><button id="coachBtn" class="btn small secondary" type="button">Accès coach</button><button id="authBtn" class="btn small secondary" type="button">Connexion</button><button id="backupBtn" class="icon-btn" aria-label="Sauvegarde">↥</button></div>
   </header>
@@ -475,7 +475,11 @@
   }
 
   function isCupMatch(m){
-    return String(m?.competition||'').trim().toLowerCase().includes('coupe');
+    const label=String(m?.label||'').trim().toLowerCase();
+    const competition=String(m?.competition||'').trim().toLowerCase();
+    return label.includes('coupe')
+      || competition.includes('coupe')
+      || competition.includes('gambardella');
   }
 
   function matchAvailability(matchId,playerId){
@@ -1611,12 +1615,12 @@
       let reloading=false;
       navigator.serviceWorker.addEventListener('controllerchange',()=>{
         if(reloading)return;
-        if(sessionStorage.getItem('swReloadV1303')==='1')return;
+        if(sessionStorage.getItem('swReloadV1304')==='1')return;
         reloading=true;
-        sessionStorage.setItem('swReloadV1303','1');
+        sessionStorage.setItem('swReloadV1304','1');
         location.reload();
       });
-      const reg=await navigator.serviceWorker.register('./sw.js?v=1303',{scope:'./',updateViaCache:'none'});
+      const reg=await navigator.serviceWorker.register('./sw.js?v=1304',{scope:'./',updateViaCache:'none'});
       await reg.update();
       if(reg.waiting) reg.waiting.postMessage({type:'SKIP_WAITING'});
     }catch(e){
