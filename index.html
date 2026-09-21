@@ -29,7 +29,7 @@
   <header class="app-header">
     <div>
       <div class="eyebrow">SAINT-PALAIS-SUR-MER</div>
-      <h1>U18 R2 <small style="font-size:11px;color:#65756d;font-weight:700">V1.29</small></h1>
+      <h1>U18 R2 <small style="font-size:11px;color:#65756d;font-weight:700">V1.29.1</small></h1>
     </div>
     <div class="header-actions"><span id="syncBadge" class="sync-badge">Local</span><button id="coachBtn" class="btn small secondary" type="button">Accès coach</button><button id="authBtn" class="btn small secondary" type="button">Connexion</button><button id="backupBtn" class="icon-btn" aria-label="Sauvegarde">↥</button></div>
   </header>
@@ -1528,9 +1528,29 @@
   document.getElementById('saveCloudNowBtn').onclick=()=>pushCloud(true);
   document.getElementById('reloadCloudBtn').onclick=()=>syncOnLogin(true);
   document.getElementById('refreshHistoryBtn').onclick=loadHistory;
+  async function ensureLatestServiceWorker(){
+    if(!('serviceWorker' in navigator)) return;
+    try{
+      let reloading=false;
+      navigator.serviceWorker.addEventListener('controllerchange',()=>{
+        if(reloading)return;
+        if(sessionStorage.getItem('swReloadV1291')==='1')return;
+        reloading=true;
+        sessionStorage.setItem('swReloadV1291','1');
+        location.reload();
+      });
+      const reg=await navigator.serviceWorker.register('./sw.js?v=1291',{scope:'./',updateViaCache:'none'});
+      await reg.update();
+      if(reg.waiting) reg.waiting.postMessage({type:'SKIP_WAITING'});
+    }catch(e){
+      console.warn('Mise à jour PWA indisponible',e);
+    }
+  }
+
   try{render();}catch(e){console.error('Erreur initialisation affichage',e);}
   updateAccessUI();
   initCloud().catch(e=>{console.warn('Initialisation cloud impossible',e);setSyncStatus('Lecture seule','warn');});
+  ensureLatestServiceWorker();
 })();
 
 </script>
