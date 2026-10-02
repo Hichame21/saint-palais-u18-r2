@@ -1,0 +1,97 @@
+from pathlib import Path
+import re
+
+p=Path('index.html')
+c=p.read_text()
+
+def rep(old,new,label):
+    global c
+    if old not in c:
+        raise SystemExit(f'Anchor missing: {label}')
+    c=c.replace(old,new,1)
+
+rep('V1.30.5','V1.31','version')
+rep('grid-template-columns:repeat(6,1fr)','grid-template-columns:repeat(7,1fr)','nav columns')
+
+css=""".opponent-hero{background:linear-gradient(135deg,#1e5d8e,#397aa7);color:#fff;border:0}.opponent-hero .muted{color:rgba(255,255,255,.82)}.opponent-status{border-radius:16px;padding:14px;margin:12px 0;border:1px solid var(--line)}.opponent-status.none_detected{background:#edf8f1;border-color:#b9dbc6}.opponent-status.suspended{background:#fde8e8;border-color:#e5aaaa}.opponent-status.incomplete{background:#fff8e8;border-color:#e6cd8f}.opponent-status.pending{background:#e7f2fb;border-color:#bdd5e8}.opponent-player{border:1px solid var(--line);border-radius:14px;padding:12px;background:#fff;margin-top:9px}.opponent-player strong{display:block}.opponent-sources{display:grid;gap:7px;margin-top:10px}.opponent-source{display:flex;align-items:center;justify-content:space-between;gap:9px;border:1px solid var(--line);border-radius:12px;padding:10px;background:#fff}.opponent-source a{color:var(--blue);font-weight:800;text-decoration:none;overflow-wrap:anywhere}.opponent-meta{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}@media(max-width:640px){.bottom-nav button small{font-size:8px}.bottom-nav button{font-size:17px}}
+"""
+rep('</style>',css+'</style>','css')
+
+rep('<section id="view-discipline" class="view"></section>\n    <section id="view-stats" class="view"></section>', '<section id="view-discipline" class="view"></section>\n    <section id="view-opponent" class="view"></section>\n    <section id="view-stats" class="view"></section>', 'opponent view')
+
+rep('<button data-view="discipline"><span>!</span><small>Discipline</small></button>\n    <button data-view="stats"><span>↗</span><small>Stats</small></button>', '<button data-view="discipline"><span>!</span><small>Discipline</small></button>\n    <button data-view="opponent"><span>◉</span><small>Adversaire</small></button>\n    <button data-view="stats"><span>↗</span><small>Stats</small></button>', 'opponent nav')
+
+rep("      ['discipline',renderDiscipline],\n      ['stats',renderStats]", "      ['discipline',renderDiscipline],\n      ['opponent',renderOpponent],\n      ['stats',renderStats]", 'render jobs')
+
+rep("  let callupViewMode = sessionStorage.getItem('callupViewMode') || 'list';", "  let callupViewMode = sessionStorage.getItem('callupViewMode') || 'list';\n  let opponentWatch=null, opponentWatchLoaded=false, opponentWatchLoading=false;", 'opponent state')
+
+anchor='  function renderDiscipline(){'
+if anchor not in c:
+    raise SystemExit('Anchor missing: renderDiscipline')
+opponent_js=r'''  function nextChampionshipMatch(ref=todayISO()){
+    return sortedMatches().find(m=>m.date>=ref && (m.status||'À venir')==='À venir' && isChampionshipMatch(m)) || null;
+  }
+
+  async function loadOpponentWatch(force=false){
+    if(opponentWatchLoading || (opponentWatchLoaded&&!force)) return;
+    opponentWatchLoading=true;
+    try{
+      const res=await fetch(`${SUPABASE_URL}/rest/v1/opponent_watch?singleton_id=eq.1&select=*`,{
+        headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`},cache:'no-store'
+      });
+      if(!res.ok) throw new Error(`HTTP ${res.status}`);
+      const rows=await res.json();
+      opponentWatch=rows?.[0]||null;
+      opponentWatchLoaded=true;
+    }catch(e){
+      console.warn('Chargement équipe adverse impossible',e);
+    }finally{
+      opponentWatchLoading=false;
+      if(currentView==='opponent') renderOpponent();
+    }
+  }
+
+  function opponentStatusInfo(status){
+    if(status==='suspended')return {label:'Suspension détectée',cls:'suspended',pill:'red'};
+    if(status==='none_detected')return {label:'Aucune suspension détectée',cls:'none_detected',pill:'green'};
+    if(status==='incomplete')return {label:'Vérification incomplète',cls:'incomplete',pill:'amber'};
+    return {label:'Vérification en attente',cls:'pending',pill:'blue'};
+  }
+
+  function renderOpponent(){
+    const el=document.getElementById('view-opponent'); if(!el)return;
+    const nm=nextChampionshipMatch();
+    if(!opponentWatchLoaded&&!opponentWatchLoading) loadOpponentWatch();
+    if(!nm){el.innerHTML='<div class="section-head"><h2>Équipe adverse</h2></div><div class="empty">Aucun prochain match de championnat enregistré.</div>';return;}
+    if(!opponentWatchLoaded){el.innerHTML=`<div class="section-head"><h2>Équipe adverse</h2></div><div class="card opponent-hero"><div class="muted">PROCHAIN ADVERSAIRE · CHAMPIONNAT</div><div class="hero-title">${esc(nm.opponent||'Adversaire à renseigner')}</div><div class="hero-sub">${esc(nm.label)} · ${fmt(nm.date)} · ${esc(nm.venue)}</div></div><div class="empty">Chargement de la veille disciplinaire…</div>`;return;}
+    const w=opponentWatch;
+    const same=!!w && w.match_id===nm.id;
+    const status=opponentStatusInfo(same?w.status:'pending');
+    const players=Array.isArray(w?.players)?w.players:[];
+    const sources=Array.isArray(w?.sources)?w.sources:[];
+    const checked=w?.checked_at?new Date(w.checked_at).toLocaleString('fr-FR',{dateStyle:'short',timeStyle:'short'}):'Jamais';
+    const confidence=w?.confidence==='high'?'Élevée':w?.confidence==='medium'?'Moyenne':'Limitée';
+    const playerHtml=players.length?players.map(x=>`<div class="opponent-player"><strong>${esc(x.name||x.player||'Joueur')}</strong><div class="muted">${esc(x.sanction||x.status||'Suspension détectée')}</div>${x.details?`<div class="muted">${esc(x.details)}</div>`:''}${x.match?`<div class="muted">Match concerné : ${esc(x.match)}</div>`:''}</div>`).join(''):(same&&w?.status==='suspended'?'<div class="empty">Suspension détectée mais nom du joueur non identifié dans la source.</div>':'');
+    const sourceHtml=sources.length?sources.map(s=>`<div class="opponent-source"><span>${esc(s.label||'Source')}</span>${s.url?`<a href="${esc(s.url)}" target="_blank" rel="noopener">Consulter ↗</a>`:''}</div>`).join(''):'<div class="muted">Aucune source publique exploitable enregistrée.</div>';
+    el.innerHTML=`
+      <div class="section-head"><h2>Équipe adverse</h2><button type="button" id="refreshOpponentWatch" class="btn secondary small nav-only">Actualiser</button></div>
+      <div class="card opponent-hero"><div class="muted">PROCHAIN ADVERSAIRE · CHAMPIONNAT</div><div class="hero-title">${esc(nm.opponent||'Adversaire à renseigner')}</div><div class="hero-sub">${esc(nm.label)} · ${fmt(nm.date)} · ${esc(nm.venue)}</div></div>
+      <div class="opponent-status ${status.cls}"><div class="section-head" style="margin:0"><strong>${status.label}</strong><span class="pill ${status.pill}">${players.length} joueur${players.length>1?'s':''}</span></div>${!same?'<p class="muted">La veille cloud n’a pas encore été recalculée pour ce nouvel adversaire.</p>':''}${same&&w?.note?`<p class="muted">${esc(w.note)}</p>`:''}${playerHtml}</div>
+      <div class="card"><h3>Fiabilité de la vérification</h3><div class="opponent-meta"><span class="pill blue">Dernier contrôle : ${checked}</span><span class="pill ${w?.confidence==='high'?'green':w?.confidence==='medium'?'blue':'amber'}">Fiabilité : ${confidence}</span></div><p class="muted">« Aucune suspension détectée » signifie qu’aucune suspension nominative n’a été trouvée dans les sources publiques consultées. Ce n’est pas une garantie absolue si une décision n’est accessible que dans Footclubs ou par notification officielle.</p></div>
+      <div class="card"><h3>Sources consultées</h3><div class="opponent-sources">${sourceHtml}</div></div>`;
+    const refresh=el.querySelector('#refreshOpponentWatch');
+    if(refresh)refresh.onclick=()=>{opponentWatchLoaded=false;loadOpponentWatch(true);toast('Actualisation de la veille adverse');};
+  }
+
+'''
+c=c.replace(anchor,opponent_js+anchor,1)
+
+rep("if(el.matches('[data-stats-mode],#statsMatchSelect,#callupMatchSelect,#refDate,.player-name-btn,.nav-only'))return true;", "if(el.matches('[data-stats-mode],[data-stats-comp],#statsMatchSelect,#callupMatchSelect,#refDate,.player-name-btn,.nav-only'))return true;", 'readonly nav')
+
+c=c.replace('swReloadV1305','swReloadV131').replace('sw.js?v=1305','sw.js?v=1310')
+p.write_text(c)
+
+sw=Path('sw.js')
+s=sw.read_text()
+s=re.sub(r"const CACHE='[^']+'", "const CACHE='spm-u18-r2-v1-31-20261002'", s, count=1)
+sw.write_text(s)
